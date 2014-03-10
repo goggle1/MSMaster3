@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>MediaServer管理系统</title>
+	
+	{% load staticfiles %}
+	<link type="text/css" rel="stylesheet" href='{% static "js/extjs/resources/css/ext-all.css" %}'/>
+	<link type="text/css" rel="stylesheet" href='{% static "css/global.css" %}' />
+
+	<script type="text/javascript" src='{% static "js/extjs/adapter/ext/ext-base.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/ext-all-debug.js" %}'></script>
+		
+	<script type="text/javascript" src='{% static "js/extjs/lib/ui/ext-ui-combo-pagesize.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ui/ext-ui-slider-pagesize.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/ProgressBarPager.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/PanelResizer.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/PagingMemoryProxy.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/ColumnHeaderGroup.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/miframe.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/TabCloseMenu.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/ComboBoxTree.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGridSorter.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGridColumnResizer.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGridNodeUI.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGridLoader.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGridColumns.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/treegrid/TreeGrid.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/MultiSelect.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/ItemSelector.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/Spinner.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/SpinnerField.js" %}'></script>
+	<script type="text/javascript" src='{% static "js/extjs/lib/ux/DateTimeField.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/extjs/lib/jsonp/jsonp.js" %}'></script>
+
+	<script type="text/javascript" src='{% static "js/main.js" %}'></script>
+</head>
+<body scroll="no" style="width:100%;height:100%;margin:0 auto;">
+<div id="loading-mask" style="">
+<div id="loading">
+  <div style="text-align:center;padding-top:26%"><img src='{% static "css/img/loading.gif" %}' width="32" height="32" style="margin-right:8px;" align="absmiddle"/>Loading...</div>
+</div>
+</div>
+</body>
+</html>

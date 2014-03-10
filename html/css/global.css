@@ -1,0 +1,137 @@
+﻿@charset "utf-8";
+/***************************************************************************************
+ *
+ * Macross2.0.0
+ *
+ * File Name:     global.css
+ * Description:   全局样式
+ * Author:        朱兵兵
+ *
+ * Copyright 2007-, Funshion Online Technologies Ltd.
+ * All Rights Reserved
+ *
+ * 版权 2007-，北京风行在线技术有限公司
+ * 所有版权保护
+ *
+ * This is UNPUBLISHED PROPRIETARY SOURCE CODE of Funshion Online Technologies Ltd.;
+ * the contents of this file may not be disclosed to third parties, copied or
+ * duplicated in any form, in whole or in part, without the prior written
+ * permission of Funshion Online Technologies Ltd.
+ *
+ * 这是北京风行在线技术有限公司未公开的私有源代码。本文件及相关内容未经风行在线技术有
+ * 限公司事先书面同意，不允许向任何第三方透露，泄密部分或全部; 也不允许任何形式的私自备份。
+ *
+ ***************************************************************************************/
+.bold{font-weight:bold;}
+.thin{font-weight:normal;}
+.hidden{display:none;}
+ /*color*/
+.yellow{color:#FF8040;}
+.red{color:red;}
+.grey{color:#888888;}
+.x-tree-imp-node a span{
+    color: #FF0000;
+}
+.mark-red table{
+	color: red;
+} 
+.green{color:green;}
+/*background color*/
+.bgred{background-color:red;}
+.bggreen{background-color:green;}
+.bg0f6{background-color:#0f6;}
+.bgyellow{background-color:yellow;}
+
+.mt5{margin-top:5px;}
+ 
+.add{background-image:url("img/dispatch.png")}
+.modify{background-image:url("img/modify.png")}
+.confirm{background-image:url("img/confirm.png")}
+.delete{background-image:url("img/delete.gif")}
+.cancel{background-image:url("img/cancel.png")}
+.detail{background-image:url("img/detail.png")}
+.down{background-image:url("img/csv.gif")}
+.sync{background-image:url("img/sync.png")}
+.recall{background-image:url("img/no.gif")}
+.force-recall{background-image:url("img/cancel.png")}
+
+.active{background-image:url("img/valid.png")}
+.no_active{background-image:url("img/invalid.png")}
+.refresh{background-image:url("img/refresh.png")}
+.search{background-image:url("img/search.gif")}
+.reset{background-image:url("img/reset.png")}
+
+.flux{background-image:url("img/flux.png")}
+.flux_repair{background-image:url("img/flux_repair.png")}
+.dispatch{background-image:url("img/dispatch.png")}
+.repair{background-image:url("img/repair.png")}
+.running{background-image:url("img/start.png")}
+.stop{background-image:url("img/stop.png")}
+.chart{background-image:url("img/chart.png")}
+
+.compare{background-image:url("img/env.gif")}
+.compare_down{background-image:url("img/compare_down.gif")}
+.compare-repair{background-image:url("img/video_repair.png")}
+.upload{background-image:url("img/upload.png")}
+.vod_down{background-image:url("img/vod_down.png")}
+.vod_modify{background-image:url("img/vod_modify.png")}
+
+/*link*/
+.link{background-image:url("img/link.png")}
+.link_modify{background-image:url("img/link_modify.png")}
+.link_del{background-image:url("img/link_del.png")}
+.link_add{background-image:url("img/link_add.png")}
+.check{background-image:url("img/check.gif")}
+
+.tabs{background-image:url("img/tabs.gif")}
+
+
+/*user*/
+.user_modify{background-image:url("img/user_modify.png")}
+.user_valid{background-image:url("img/user_valid.png")}
+.user_invalid{background-image:url("img/user_invalid.png")}
+.user_reset_pwd{background-image:url("img/pw.png")}
+.user_detail{background-image:url("img/detail.png")}
+
+
+/*Ext css*/
+/* style rows on mouseover */
+.x-selectable, .x-selectable * {-moz-user-select: text!important;-khtml-user-select: text!important; }
+.x-check-group-alt {background: #D1DDEF;border-top:1px dotted #B5B8C8;border-bottom:1px dotted #B5B8C8;}
+.x-grid3-row-over .x-grid3-cell-inner {font-weight: bold;}
+/*.x-grid3-row-selected  .x-grid3-cell-inner {font-weight: bold;}*/
+.menu-title{background: #D6E3F2;border-style: solid;border-color:#DAE6F4 #99bbe8 #99bbe8 #DAE6F4;border-width: 1px;margin:-2px -2px 0;color:#15428b;font:bold 10px tahoma,arial,verdana,sans-serif;display:block;padding:3px;}
+.x-grid-panel .x-panel-mc .x-panel-body{background-color: transparent;border: 0 none;}		/*去掉form表单里的border*/
+/*树形菜单钱图标的样式，修改width 16px 为 18px*/
+.x-tree-icon, .x-tree-ec-icon, .x-tree-elbow-line, .x-tree-elbow, .x-tree-elbow-end, .x-tree-elbow-plus, .x-tree-elbow-minus, .x-tree-elbow-end-plus, .x-tree-elbow-end-minus{border: 0 none;height: 18px;margin: 0;padding: 0;vertical-align: top;width: 18px;background-repeat: no-repeat;}
+.x-tree-node-collapsed .x-tree-node-icon, .x-tree-node-expanded .x-tree-node-icon, .x-tree-node-leaf .x-tree-node-icon{border: 0 none;height: 18px;margin: 0;padding: 0;vertical-align: top;width: 18px;background-position:center;background-repeat: no-repeat;}
+/*begin弹出窗口的样式*/
+.xing{font-weight:normal;font-size:14px;padding:0 5px;color:red;}
+#tab-div {background: #e0e5f8;border: 1px solid #cce0f8;margin: 0 0 10px 0;padding: 1px;}
+#tab-div #tabbar-div {background: #f7f7f7;padding-left: 10px;height: 22px;padding-top: 1px;}
+#tab-div #tabbar-div p {margin:2px 0 0 0;}
+#tab-div #tabbar-div a,#tab-div #tabbar-div a:visited,#tab-div #tabbar-div a:active,#tab-div #tabbar-div a:hover{text-decoration:none;}
+#tab-div #tabbar-div .tab-front {color: #000;background: #d6dcf3;line-height: 20px;font-weight: bold;padding: 4px 15px 4px 18px;border-right: 2px solid #a6b5de;cursor: hand;cursor: pointer;}
+#tab-div #tabbar-div .tab-back {color: #5c6dad;line-height: 20px;padding: 4px 15px 4px 18px;border-right: 1px solid #a6b5de;cursor: hand;cursor: pointer;}
+#tab-div #tabbar-div .tab-hover {color: #5c6dad;background: #e9ecfa;line-height: 20px;padding: 4px 15px 4px 18px;border-right: 1px solid #FFF;cursor: hand;cursor: pointer;}
+
+.dialog-advanced{z-index:800;top:50px;left:20%;width:600px;visibility:visible;position:absolute;background:#ffffff;font-size:12px;}
+.dialog-advanced .underlay{position:absolute;padding:8px;background:#000;top:-8px;left:-8px;opacity:.5;filter:alpha(opacity=50);z-index:-1;}
+.dialog-advanced .bd{padding:12px;background:#FFFFFF none repeat scroll 0% 50%;}
+.dialog-advanced .bd .block{margin:10px;}
+.dialog-advanced .bd .block li{white-space:nowrap;}
+.dialog-advanced .share-content{width:330px;margin:20px 20px 20px 5.5em;padding-left:10px;border-top:1px solid #ccc;border-bottom:1px solid #ccc;background:#ececec;}
+.dialog-advanced .bd textarea{width:430px;height:80px;}
+.dialog-advanced .ft input{margin:0 4px;}
+.dialog-advanced .loading{margin:12px;}
+.dialog-advanced .hd h3{margin-top:0px;margin-bottom:0px;padding:5px 10px 0;border:1px solid #2782d6;text-align:left;background:#6386BE;color:#fff;font-size:14px;line-height:200%;_zoom:1;}
+.dialog-advanced .hd h3{border:0;}
+.dialog-advanced .ft{clear:both;padding:10px;border-top:1px solid #ccc;background:#eee;text-align:right;}
+.dialog-close a{display:block;width:13px;height:13px;background:url(img/ico-close-before.gif) 0 0 no-repeat;text-indent:-999em;font-size:0;line-height:0;overflow:hidden;}
+.dialog-close a:hover{background:url(img/ico-close-after.gif) 0 0 no-repeat;}
+.dialog-close{top:11px;right:10px;float:right;position: absolute;z-index:803;}
+.f-button{cursor:pointer;font-size:12px;height:21px;padding:1px 10px 1px 10px;padding:1px 5px;border:1px solid;border-color:#ddd #264f6e #264f6e #ddd;background:#2782d6;color:#fff;text-align:center;line-height:17px;letter-spacing:1px;}
+.dialog-advanced .bd .loading{background:url(img/loading.gif) 0 0 no-repeat;padding-left:17px;}
+/*end弹出窗口的样式*/
+/*返回按钮的样式*/
+.back{ background-image: url(img/back.gif) !important;}
