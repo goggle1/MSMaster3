@@ -28,6 +28,11 @@ class mobile_task_temperature(models.Model):
     temperature5    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature5")
     temperature6    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature6") 
     temperature7    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature7")
+    PayOrFree       = models.SmallIntegerField(blank = False, null = True,  verbose_name = u"PayOrFree")
+    mediaId         = models.IntegerField(blank = False, null = True,  verbose_name = u"mediaId")  
+    mediaName       = models.CharField(max_length = 256, blank = False, null = True,  verbose_name = u"mediaName")   
+    payStartTime    = models.DateTimeField(null = True, auto_now_add = False, verbose_name = u"payStartTime")
+    payEndTime      = models.DateTimeField(null = True, auto_now_add = False, verbose_name = u"payEndTime")
     
     class Meta:
         db_table    = "mobile_task_temperature"
@@ -49,6 +54,13 @@ class mobile_task_temperature(models.Model):
         dic['temperature5']     = str(self.temperature5)
         dic['temperature6']     = str(self.temperature6)
         dic['temperature7']     = str(self.temperature7)
+        dic['PayOrFree']        = str(self.PayOrFree)
+        dic['mediaId']          = str(self.mediaId)
+        dic['mediaName']        = str(self.mediaName)
+        #dic['payStartTime']     = self.payStartTime.strftime("%Y-%m-%d %H:%M:%S")    
+        #dic['payEndTime']       = self.payEndTime.strftime("%Y-%m-%d %H:%M:%S")
+        dic['payStartTime']     = str(self.payStartTime)
+        dic['payEndTime']       = str(self.payEndTime)
         return dic
         
 
@@ -79,6 +91,11 @@ class pc_task_temperature(models.Model):
     temperature5    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature5")
     temperature6    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature6") 
     temperature7    = models.FloatField(blank = False, null = True,  verbose_name = u"temperature7")
+    PayOrFree       = models.SmallIntegerField(blank = False, null = True,  verbose_name = u"PayOrFree")
+    mediaId         = models.IntegerField(blank = False, null = True,  verbose_name = u"mediaId")  
+    mediaName       = models.CharField(max_length = 256, blank = False, null = True,  verbose_name = u"mediaName")   
+    payStartTime    = models.DateTimeField(null = True, auto_now_add = False, verbose_name = u"payStartTime")
+    payEndTime      = models.DateTimeField(null = True, auto_now_add = False, verbose_name = u"payEndTime")
     
     class Meta:
         db_table    = "pc_task_temperature"
@@ -100,5 +117,12 @@ class pc_task_temperature(models.Model):
         dic['temperature5']     = str(self.temperature5)
         dic['temperature6']     = str(self.temperature6)
         dic['temperature7']     = str(self.temperature7)
+        dic['PayOrFree']        = str(self.PayOrFree)
+        dic['mediaId']          = str(self.mediaId)
+        dic['mediaName']        = str(self.mediaName)      
+        #dic['payStartTime']     = self.payStartTime.strftime("%Y-%m-%d %H:%M:%S")    
+        #dic['payEndTime']       = self.payEndTime.strftime("%Y-%m-%d %H:%M:%S")
+        dic['payStartTime']     = str(self.payStartTime)
+        dic['payEndTime']       = str(self.payEndTime)
         return dic
         

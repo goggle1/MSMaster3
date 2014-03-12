@@ -1631,6 +1631,11 @@ def do_sync_pay_medias(platform, record):
  
     db = DB.db.DB_MYSQL()    
     db.connect(DB.db.MS2_DB_CONFIG.host, DB.db.MS2_DB_CONFIG.port, DB.db.MS2_DB_CONFIG.user, DB.db.MS2_DB_CONFIG.password, DB.db.MS2_DB_CONFIG.db)
+    
+    #sql = 'update %s_task_temperature set PayOrFree=0 where PayOrFree=1' % (platform)
+    #print sql
+    #db.execute(sql)
+    
     for task in task_list:
         sql = 'update %s_task_temperature set PayOrFree=1, mediaId=%d, mediaName="%s", payStartTime="%s", payEndTime="%s" where hash="%s"' % \
             (platform, task['mediaId'], task['mediaName'], task['payStartTime'], task['payEndTime'], task['hashid'])

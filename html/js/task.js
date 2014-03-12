@@ -92,13 +92,11 @@ var taskJS = function(){
 				'is_valid',
 				'filesize',
 				'temperature0',
-				'temperature1',
-				'temperature2',
-				'temperature3',
-				'temperature4',
-				'temperature5',
-				'temperature6',
-				'temperature7'
+				'PayOrFree',
+				'mediaId',
+				'mediaName',
+				'payStartTime',
+				'payEndTime'
 			]
 		});
 
@@ -111,13 +109,11 @@ var taskJS = function(){
 			{header : 'is_valid', id : 'hot', dataIndex : 'hot', sortable : true, hidden: true},
 			{header : 'filesize', id : 'filesize', dataIndex : 'filesize', sortable : true},
 			{header : 'temperature0', id : 'temperature0', dataIndex : 'temperature0', sortable : true},
-			{header : 'temperature1', id : 'temperature1', dataIndex : 'temperature1', sortable : true},
-			{header : 'temperature2', id : 'temperature2', dataIndex : 'temperature2', sortable : true},
-			{header : 'temperature3', id : 'temperature3', dataIndex : 'temperature3', sortable : true},
-			{header : 'temperature4', id : 'temperature4', dataIndex : 'temperature4', sortable : true},
-			{header : 'temperature5', id : 'temperature5', dataIndex : 'temperature5', sortable : true},
-			{header : 'temperature6', id : 'temperature6', dataIndex : 'temperature6', sortable : true},
-			{header : 'temperature7', id : 'temperature7', dataIndex : 'temperature7', sortable : true, width: 150}
+			{header : 'PayOrFree', id : 'PayOrFree', dataIndex : 'PayOrFree', sortable : true},
+			{header : 'mediaId', id : 'mediaId', dataIndex : 'mediaId', sortable : true},
+			{header : 'mediaName', id : 'mediaName', dataIndex : 'mediaName', sortable : true},
+			{header : 'payStartTime', id : 'payStartTime', dataIndex : 'payStartTime', sortable : true},
+			{header : 'payEndTime', id : 'payEndTime', dataIndex : 'payEndTime', sortable : true, width: 150}
 		]);
 		
 		var task_page = new Ext.PagingToolbar({
@@ -450,7 +446,7 @@ var taskJS = function(){
 		});
 		
 		var win = new Ext.Window({
-			width:400,height:160,minWidth:200,minHeight:100,
+			width:400,height:108,minWidth:200,minHeight:100,
 			autoScroll:'auto',
 			title : "同步付费库",
 			id : "sync_pay_medias_win_" + self.plat,
