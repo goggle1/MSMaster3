@@ -10,6 +10,7 @@ import time
 import MS.views
 import task.views
 import room.views
+import virtual_room.views
 
 from multiprocessing import Process
 import os
@@ -199,6 +200,8 @@ def do_operation(platform, operation):
             result = room.views.do_sync_room_db(platform, operation)
         elif(operation.type == 'sync_room_status'):
             result = room.views.do_sync_room_status(platform, operation)
+        elif(operation.type == 'stat_virtual_room'):
+            result = virtual_room.views.do_stat_virtual_room(platform, operation)
         elif(operation.type == 'delete_cold_tasks'):
             result = room.views.do_delete_cold_tasks(platform, operation)  
         elif(operation.type == 'add_hot_tasks'):
@@ -260,11 +263,12 @@ def operation_type_int(v_type):
                     'sync_ms_status':7,             \
                     'sync_room_db':8,               \
                     'sync_room_status':9,           \
-                    'delete_cold_tasks':10,         \
-                    'add_hot_tasks':11,             \
-                    'auto_distribute_tasks':12,     \
-                    'auto_delete_tasks':13,         \
-                    'evaluate_temperature':14       \
+                    'stat_virtual_room':10,         \
+                    'delete_cold_tasks':11,         \
+                    'add_hot_tasks':12,             \
+                    'auto_distribute_tasks':13,     \
+                    'auto_delete_tasks':14,         \
+                    'evaluate_temperature':15       \
                 }
     if(type_dict.has_key(v_type) == True):
         result = type_dict[v_type]        

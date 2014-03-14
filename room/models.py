@@ -16,6 +16,9 @@ class mobile_room(models.Model):
     num_dispatching     = models.IntegerField(blank = False, null = True,  verbose_name = u"num_dispatching") 
     num_deleting        = models.IntegerField(blank = False, null = True,  verbose_name = u"num_deleting")    
     check_time          = models.DateTimeField(auto_now_add=True, null = True, verbose_name = u"check_time")
+    topN                = models.IntegerField(blank = False, null = True,  verbose_name = u"topN") 
+    virtual_room_id     = models.IntegerField(blank = False, null = True,  verbose_name = u"virtual_room_id")  
+    virtual_room_name   = models.CharField(null = True, max_length=64, verbose_name = u"virtual_room_name")
     
     def todict(self):
         dic = {}
@@ -30,6 +33,9 @@ class mobile_room(models.Model):
         dic['num_dispatching'] = str(self.num_dispatching)
         dic['num_deleting'] = str(self.num_deleting)
         dic['check_time'] = str(self.check_time)
+        dic['topN'] = str(self.topN)
+        dic['virtual_room_id'] = str(self.virtual_room_id)
+        dic['virtual_room_name'] = str(self.virtual_room_name)
         return dic
     
     class Meta:
@@ -50,6 +56,9 @@ class pc_room(models.Model):
     num_dispatching     = models.IntegerField(blank = False, null = True,  verbose_name = u"num_dispatching") 
     num_deleting        = models.IntegerField(blank = False, null = True,  verbose_name = u"num_deleting")    
     check_time          = models.DateTimeField(auto_now_add=True, null = True, verbose_name = u"check_time")
+    topN                = models.IntegerField(blank = False, null = True,  verbose_name = u"topN") 
+    virtual_room_id     = models.IntegerField(blank = False, null = True,  verbose_name = u"virtual_room_id")  
+    virtual_room_name   = models.CharField(null = True, max_length=64, verbose_name = u"virtual_room_name")
     
     def todict(self):
         dic = {}
@@ -64,6 +73,9 @@ class pc_room(models.Model):
         dic['num_dispatching'] = str(self.num_dispatching)
         dic['num_deleting'] = str(self.num_deleting)
         dic['check_time'] = str(self.check_time)
+        dic['topN'] = str(self.topN)
+        dic['virtual_room_id'] = str(self.virtual_room_id)
+        dic['virtual_room_name'] = str(self.virtual_room_name)
         return dic
     
     class Meta:
