@@ -98,6 +98,16 @@ def tree(request):
     tree_node['children'].append(child_node)
     
     child_node = {}
+    child_node['href'] = "javascript:void(index_main('virtual_room', '移动虚拟机房列表', 'mobile'))"
+    child_node['icon'] = '/static/css/img/tree/files.gif'
+    child_node['id'] = 106
+    child_node['leaf'] = True
+    child_node['qtip'] = '虚拟机房'
+    child_node['singleClickExpand'] = True
+    child_node['text'] = '虚拟机房'
+    tree_node['children'].append(child_node)
+    
+    child_node = {}
     child_node['href'] = "javascript:void(index_main('task', '移动任务列表', 'mobile'))"
     child_node['icon'] = '/static/css/img/tree/files.gif'
     child_node['id'] = 7
@@ -147,6 +157,16 @@ def tree(request):
     child_node['qtip'] = '机房列表'
     child_node['singleClickExpand'] = True
     child_node['text'] = '机房列表'
+    tree_node['children'].append(child_node)
+    
+    child_node = {}
+    child_node['href'] = "javascript:void(index_main('virtual_room', 'PC虚拟机房列表', 'pc'))"
+    child_node['icon'] = '/static/css/img/tree/files.gif'
+    child_node['id'] = 110
+    child_node['leaf'] = True
+    child_node['qtip'] = '虚拟机房'
+    child_node['singleClickExpand'] = True
+    child_node['text'] = '虚拟机房'
     tree_node['children'].append(child_node)
     
     child_node = {}

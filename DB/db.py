@@ -46,7 +46,7 @@ class MS2_DB_CONFIG:
     port        = 3306
     user        = 'admin'
     password    = '123456'
-    db          = 'msmaster2' 
+    db          = 'msmaster3' 
 
 
 class HITS_FILE:
