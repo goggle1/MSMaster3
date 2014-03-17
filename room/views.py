@@ -16,6 +16,7 @@ import threading
 from ms import *
 import MS.views
 import datetime
+import virtual_room.views
 
 import sys
 
@@ -1027,3 +1028,44 @@ def auto_delete_tasks(request, platform):
     response = HttpResponse(str_datas, mimetype='application/json;charset=UTF-8')
     response['Content-Length'] = len(str_datas)
     return response     
+
+
+def room_in_virtual_room(request, platform):
+    cmd = 'room_in_virtual_room'
+    print request.REQUEST
+            
+    str_room_id = request.REQUEST['room_id']
+    str_virtual_room_id = request.REQUEST['virtual_room_id']
+    str_topN = request.REQUEST['topN']
+    num_room_id = string.atoi(str_room_id)
+    num_virtual_room_id = string.atoi(str_virtual_room_id)
+    num_topN = string.atoi(str_topN)
+            
+    output = ''    
+    rooms = get_room_local(platform).filter(room_id=num_room_id)
+    if(rooms.count() == 0):
+        output += 'room %d can not be found' % (num_room_id)
+        return_datas = {'success':False, 'data':output} 
+        return HttpResponse(json.dumps(return_datas))
+    room = rooms[0]
+        
+    virtual_rooms = virtual_room.views.django_get_virtual_room(platform).filter(virtual_room_id=num_virtual_room_id)
+    if(virtual_rooms.count() == 0):
+        output += 'virtual_room %d can not be found' % (num_virtual_room_id)
+        return_datas = {'success':False, 'data':output} 
+        return HttpResponse(json.dumps(return_datas))
+    one_virtual_room = virtual_rooms[0]
+    
+    room.topN = num_topN
+    room.virtual_room_id = num_virtual_room_id
+    room.virtual_room_name = one_virtual_room.virtual_room_name
+    room.save()
+    
+    output += 'room %d has been added in virtual_room %d' % (num_room_id, num_virtual_room_id)
+    return_datas = {'success':True, 'data':output}     
+    
+    str_datas = json.dumps(return_datas)
+    response = HttpResponse(str_datas, mimetype='application/json;charset=UTF-8')
+    response['Content-Length'] = len(str_datas)
+    return response   
+  

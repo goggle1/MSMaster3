@@ -206,6 +206,10 @@ def do_operation(platform, operation):
             result = room.views.do_delete_cold_tasks(platform, operation)  
         elif(operation.type == 'add_hot_tasks'):
             result = room.views.do_add_hot_tasks(platform, operation)
+        elif(operation.type == 'virtual_room_add_tasks'):
+            result = virtual_room.views.do_virtual_room_add_tasks(platform, operation)
+        elif(operation.type == 'virtual_room_delete_tasks'):
+            result = virtual_room.views.do_virtual_room_delete_tasks(platform, operation)
         elif(operation.type == 'auto_distribute_tasks'):
             result = room.views.do_auto_distribute_tasks(platform, operation)
         elif(operation.type == 'auto_delete_tasks'):
@@ -268,7 +272,9 @@ def operation_type_int(v_type):
                     'add_hot_tasks':12,             \
                     'auto_distribute_tasks':13,     \
                     'auto_delete_tasks':14,         \
-                    'evaluate_temperature':15       \
+                    'virtual_room_add_tasks':15,    \
+                    'virtual_room_delete_tasks':16, \
+                    'evaluate_temperature':17       \
                 }
     if(type_dict.has_key(v_type) == True):
         result = type_dict[v_type]        
