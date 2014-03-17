@@ -525,15 +525,15 @@ class MS_GROUP:
                 if(one_ms != None):
                     #print '%d: %s[%e][%d] distribute to %s' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_ms.db_record.controll_ip) 
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] distribute to %s \n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree'], one_ms.db_record.controll_ip))
+                        self.log_file.write('%d: %s[%e][%d][%s] distribute to %s \n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree']), one_ms.db_record.controll_ip))
                 else:
                     #print '%d: %s[%e][%d] can not be distributed!' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize']) 
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] can not be distributed!\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree']))
+                        self.log_file.write('%d: %s[%e][%d][%s] can not be distributed!\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree'])))
             else:
                 #print '%d: %s[%e][%d] exist in %s' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_ms.db_record.controll_ip)   
                 if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] exist in %s\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree'], one_ms.db_record.controll_ip) )         
+                        self.log_file.write('%d: %s[%e][%d][%s] exist in %s\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree']), one_ms.db_record.controll_ip) )         
             task_num += 1
             if(task_num >= topN):
                 break
@@ -554,15 +554,15 @@ class MS_GROUP:
                 if(one_ms != None):
                     #print '%d: %s[%e][%d] distribute to %s' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_ms.db_record.controll_ip) 
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] distribute to %s \n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree'], one_ms.db_record.controll_ip))
+                        self.log_file.write('%d: %s[%e][%d][%s] distribute to %s \n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree']), one_ms.db_record.controll_ip))
                 else:
                     #print '%d: %s[%e][%d] can not be distributed!' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize']) 
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] can not be distributed!\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree']))
+                        self.log_file.write('%d: %s[%e][%d][%s] can not be distributed!\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree'])))
             else:
                 #print '%d: %s[%e][%d] exist in %s' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_ms.db_record.controll_ip)   
                 if(self.log_file != None):
-                        self.log_file.write('%d: %s[%e][%d][%d] exist in %s\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], one_task['PayOrFree'], one_ms.db_record.controll_ip) )         
+                        self.log_file.write('%d: %s[%e][%d][%s] exist in %s\n' % (task_num, one_task['hash'], one_task['temperature0'], one_task['filesize'], str(one_task['PayOrFree']), one_ms.db_record.controll_ip) )         
             task_num += 1 
             if(task_num >= topN):
                 break
@@ -609,10 +609,10 @@ class MS_GROUP:
             ms_list_num = len(ms_list)
             if(ms_list_num<=0):
                 if(self.log_file != None):
-                    self.log_file.write('%d: %s [%s][%e][%d] not found\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], one_task['PayOrFree']))
+                    self.log_file.write('%d: %s [%s][%e][%s] not found\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], str(one_task['PayOrFree'])))
             else:                
                 if(self.log_file != None):
-                    self.log_file.write('%d: %s [%s][%e][%d] found %d, choose_keep_unique\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], one_task['PayOrFree'], ms_list_num))
+                    self.log_file.write('%d: %s [%s][%e][%s] found %d, choose_keep_unique\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], str(one_task['PayOrFree']), ms_list_num))
                     for one_ms in ms_list:
                         self.log_file.write('%s, %s, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.controll_ip, one_ms.db_record.total_disk_space, one_ms.db_record.free_disk_space))
                 self.choose_keep_unique(ms_list, one_task['hash'])  
@@ -638,16 +638,16 @@ class MS_GROUP:
         for one_task in task_list:
             if(self.find_task_is_keeped(one_task['hash']) == True):  
                 if(self.log_file != None):
-                    self.log_file.write('%d: %s [%s][%e][%d] have keeped\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], one_task['PayOrFree']))
+                    self.log_file.write('%d: %s [%s][%e][%s] have keeped\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], str(one_task['PayOrFree'])))
             else:
                 ms_list = self.find_ms_list_by_task(one_task['hash'])
                 ms_list_num = len(ms_list)
                 if(ms_list_num<=0):
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s [%s][%e][%d] not found\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], one_task['PayOrFree']))
+                        self.log_file.write('%d: %s [%s][%e][%s] not found\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], str(one_task['PayOrFree'])))
                 else:                
                     if(self.log_file != None):
-                        self.log_file.write('%d: %s [%s][%e][%d] found %d, choose_keep_unique\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], one_task['PayOrFree'], ms_list_num))
+                        self.log_file.write('%d: %s [%s][%e][%s] found %d, choose_keep_unique\n' % (task_num, one_task['hash'], one_task['online_time'], one_task['temperature0'], str(one_task['PayOrFree']), ms_list_num))
                         for one_ms in ms_list:
                             self.log_file.write('%s, %s, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.controll_ip, one_ms.db_record.total_disk_space, one_ms.db_record.free_disk_space))
                     self.choose_keep_unique(ms_list, one_task['hash'])  

@@ -425,8 +425,8 @@ def add_tasks_local(platform, task_list):
         if(task['filesize'] == None):
             task['filesize'] = 0      
         sql = 'INSERT INTO %s(hash, online_time, is_valid, filesize, temperature0, \
-        temperature1, temperature2, temperature3, temperature4, temperature5, temperature6, temperature7) \
-        VALUES("%s", "%s", 2, %s, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) \
+        temperature1, temperature2, temperature3, temperature4, temperature5, temperature6, temperature7, PayOrFree) \
+        VALUES("%s", "%s", 2, %s, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0) \
         ON DUPLICATE KEY UPDATE is_valid=2' % (table, task['hash'], task['online_time'], task['filesize'])              
         print sql
         db.execute(sql)

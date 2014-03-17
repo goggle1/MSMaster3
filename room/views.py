@@ -536,7 +536,9 @@ def do_auto_distribute_tasks(platform, record):
         
     for one_room in room_list:
         ms_list = get_ms_list_in_room(platform, one_room.room_id)
-        print 'room_id: %d, ms num: %d' % (one_room.room_id, len(ms_list)) 
+        print 'room_id: %d, ms num: %d' % (one_room.room_id, len(ms_list))
+        for one_ms in ms_list:
+            MS.views.get_ms_space(one_ms)
         log_file.write('room: %d, ms num: %d \n' % (one_room.room_id, len(ms_list)) )
         ms_group = MS_GROUP(platform, ms_list)        
         one_room.ms_group = ms_group        
@@ -629,6 +631,8 @@ def do_auto_delete_tasks(platform, record):
     for one_room in room_list:
         ms_list = get_ms_list_in_room(platform, one_room.room_id)
         print 'room_id: %d, ms num: %d' % (one_room.room_id, len(ms_list)) 
+        for one_ms in ms_list:
+            MS.views.get_ms_space(one_ms)
         log_file.write('room: %d, ms num: %d \n' % (one_room.room_id, len(ms_list)) )
         ms_group = MS_GROUP(platform, ms_list)        
         one_room.ms_group = ms_group        

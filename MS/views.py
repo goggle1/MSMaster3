@@ -89,12 +89,12 @@ def get_ms_macross(platform):
     db.connect(DB.db.DB_CONFIG.host, DB.db.DB_CONFIG.port, DB.db.DB_CONFIG.user, DB.db.DB_CONFIG.password, DB.db.DB_CONFIG.db)
     if(platform == 'mobile'):
         sql = "select s.server_id, s.server_name, s.server_ip, s.server_port, s.controll_ip, s.controll_port, s.ml_room_id, l.room_name, \
-                s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause \
-                from fs_server s, fs_mobile_location l where s.ml_room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"
+                s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause, s.total_size, t.free_disk, t.task_number \
+                from fs_server s, fs_mobile_location l, fs_ms_realstate t where s.ml_room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"
     elif(platform == 'pc'):
         sql = "select s.server_id, s.server_name, s.server_ip, s.server_port, s.controll_ip, s.controll_port, s.room_id, l.room_name, \
-                s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause \
-                from fs_server s, fs_server_location l where s.room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"    
+                s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause, s.total_size, t.free_disk, t.task_number \
+                from fs_server s, fs_server_location l, fs_ms_realstate t where s.room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"    
     db.execute(sql)
     
     for row in db.cur.fetchall():
@@ -127,6 +127,12 @@ def get_ms_macross(platform):
                 ms['is_dispatch'] = r
             elif(col_num == 12):
                 ms['is_pause'] = r
+            elif(col_num == 13):
+                ms['total_size'] = r
+            elif(col_num == 14):
+                ms['free_disk'] = r
+            elif(col_num == 15):
+                ms['task_number'] = r
             col_num += 1
         ms_list.append(ms)    
     
@@ -238,8 +244,36 @@ def show_ms_list(request, platform):
     return HttpResponse(output)
 
 
+def get_ms_space(ms_local):    
+    try:
+        # get disk space
+        url = 'http://%s:%d/macross?cmd=querydisk' % (ms_local.controll_ip, ms_local.controll_port)
+        print url
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req, timeout=10)
+        output = response.read()
+        print output
+        #return=ok
+        #result=12|22005|2290
+        lines = output.split('\n')
+        if(len(lines)>=2):
+            line_1 = lines[0].strip()
+            line_2 = lines[1].strip()
+            if(line_1 == 'return=ok'):
+                fields = line_2.split('=')
+                field2 = fields[1]
+                values = field2.split('|')
+                ms_local.total_disk_space = string.atoi(values[1])
+                ms_local.free_disk_space = string.atoi(values[2])
+                ms_local.save()
+                return True
+    except:
+        print '%s get disk space error' % (ms_local.controll_ip)        
+    return False
+
+
 def get_ms_status(ms_local):    
-    ms_local.task_number = 0
+    #ms_local.task_number = 0
     try:
         # get task number
         url = 'http://%s:%d/macross?cmd=queryglobalinfo' % (ms_local.controll_ip, ms_local.controll_port)
@@ -272,8 +306,8 @@ def get_ms_status(ms_local):
     except:
         print '%s get task number error' % (ms_local.controll_ip)
     
-    ms_local.total_disk_space = 0
-    ms_local.free_disk_space = 0
+    #ms_local.total_disk_space = 0
+    #ms_local.free_disk_space = 0
     try:
         # get disk space
         url = 'http://%s:%d/macross?cmd=querydisk' % (ms_local.controll_ip, ms_local.controll_port)
@@ -297,7 +331,7 @@ def get_ms_status(ms_local):
     except:
         print '%s get disk space error' % (ms_local.controll_ip)
     
-    ms_local.server_status1 = 0
+    #ms_local.server_status1 = 0
     try:
         # get status        
         req = urllib2.Request('http://%s:11000/ms/?cmd=check&detail=0'%(ms_local.controll_ip))
@@ -356,7 +390,7 @@ def do_sync_ms_db(platform, record):
             ms_insert(platform, ms_macross['server_id'], ms_macross['server_name'], ms_macross['server_ip'], ms_macross['server_port'], \
                       ms_macross['controll_ip'], ms_macross['controll_port'], ms_macross['room_id'], ms_macross['room_name'], \
                       ms_macross['server_version'], ms_macross['protocol_version'], ms_macross['is_valid'], ms_macross['is_dispatch'], ms_macross['is_pause'], \
-                      0, 0, 0, 0, 0, 0, 0, begin_time)                
+                      ms_macross['task_number'], 0, 0, 0, 0, ms_macross['total_size'], ms_macross['free_disk'], begin_time)                
             num_insert += 1
         else:
             ms_local.server_id          = ms_macross['server_id']
@@ -373,6 +407,9 @@ def do_sync_ms_db(platform, record):
             ms_local.is_dispatch        = ms_macross['is_dispatch']
             ms_local.is_dispatch        = ms_macross['is_dispatch']
             ms_local.is_pause           = ms_macross['is_pause']
+            ms_local.task_number        = ms_macross['task_number']
+            ms_local.total_disk_space   = ms_macross['total_size']
+            ms_local.free_disk_space    = ms_macross['free_disk']
             ms_local.check_time         = begin_time
             ms_local.save()
             num_update += 1
