@@ -1,0 +1,28 @@
+CREATE TABLE mobile_virtual_room( 
+	virtual_room_id     int not null, 
+	virtual_room_name   varchar(64) not null,
+	is_valid            int not null,
+	room_number         int,
+	ms_number           int,
+	task_number         int,
+	total_disk_space    bigint,
+	free_disk_space     bigint,
+	topN                int,
+	primary key (virtual_room_id) 
+); 
+
+CREATE TABLE pc_virtual_room( 
+	virtual_room_id     int not null, 
+	virtual_room_name   varchar(64) not null,
+	is_valid            int not null,
+	room_number         int,
+	ms_number           int,
+	task_number         int,
+	total_disk_space    bigint,
+	free_disk_space     bigint,
+	topN                int,
+	primary key (virtual_room_id) 
+);
+
+ALTER TABLE mobile_room ADD (topN int, virtual_room_id int, virtual_room_name varchar(64));
+ALTER TABLE pc_room ADD (topN int, virtual_room_id int, virtual_room_name varchar(64));

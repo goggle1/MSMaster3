@@ -87,14 +87,21 @@ def get_ms_macross(platform):
     db = DB.db.DB_MYSQL()
     #db.connect("192.168.8.101", 3317, "public", "funshion", "macross")
     db.connect(DB.db.DB_CONFIG.host, DB.db.DB_CONFIG.port, DB.db.DB_CONFIG.user, DB.db.DB_CONFIG.password, DB.db.DB_CONFIG.db)
+    
     if(platform == 'mobile'):
         sql = "select s.server_id, s.server_name, s.server_ip, s.server_port, s.controll_ip, s.controll_port, s.ml_room_id, l.room_name, \
                 s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause, s.total_size, t.free_disk, t.task_number \
-                from fs_server s, fs_mobile_location l, fs_ms_realstate t where s.ml_room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"
+                from fs_server s, fs_mobile_location l, fs_ms_realstate t \
+                where s.ml_room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 and s.server_id=t.server_id \
+                order by s.server_id"
     elif(platform == 'pc'):
         sql = "select s.server_id, s.server_name, s.server_ip, s.server_port, s.controll_ip, s.controll_port, s.room_id, l.room_name, \
                 s.server_version, s.protocol_version, s.is_valid, s.is_dispatch, s.is_pause, s.total_size, t.free_disk, t.task_number \
-                from fs_server s, fs_server_location l, fs_ms_realstate t where s.room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 order by s.server_id"    
+                from fs_server s, fs_server_location l, fs_ms_realstate t \
+                where s.room_id=l.room_id and s.is_valid=1 and s.support_live=0 and s.type_id=1 and s.server_id=t.server_id \
+                order by s.server_id"    
+        
+    print sql
     db.execute(sql)
     
     for row in db.cur.fetchall():
