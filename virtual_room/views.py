@@ -428,8 +428,12 @@ def get_virtual_room_list(request, platform):
     print 'get_virtual_room_list'
     print request.REQUEST
         
-    start = request.REQUEST['start']
-    limit = request.REQUEST['limit']
+    start = '0'
+    if 'start' in request.REQUEST:
+        start = request.REQUEST['start']
+    limit = '100'
+    if 'limit' in request.REQUEST:
+        limit = request.REQUEST['limit']
     start_index = string.atoi(start)
     limit_num = string.atoi(limit)
     
@@ -604,3 +608,27 @@ def virtual_room_delete_tasks(request, platform):
     response['Content-Length'] = len(str_datas)
     return response
 
+
+def get_max_virtual_room_id(request, platform):
+    print 'get_max_virtual_room_id'
+    print request.REQUEST
+    
+    max_virtual_room_id = 0
+    
+    virtual_rooms = django_get_virtual_room(platform)
+    virtual_rooms2 = virtual_rooms.order_by('-virtual_room_id')
+    if(virtual_rooms2.count() == 0):
+        max_virtual_room_id = 0
+    else:
+        virtual_room = virtual_rooms2[0]
+        max_virtual_room_id = virtual_room.virtual_room_id
+    
+    return_datas = {}
+    return_datas['success'] = True
+    return_datas['data'] = str(max_virtual_room_id)
+    
+    str_datas = json.dumps(return_datas)
+    response = HttpResponse(str_datas, mimetype='application/json;charset=UTF-8')
+    response['Content-Length'] = len(str_datas)
+    return response
+    
