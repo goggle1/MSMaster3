@@ -26,12 +26,12 @@ def django_get_virtual_room(platform):
     return rooms
 
 def django_get_rooms_in_virtual_room(platform, v_virtual_room_id):
-    ms_list = []
+    room_list = None
     if(platform == 'mobile'):
-        ms_list = room.models.mobile_room.objects.filter(virtual_room_id=v_virtual_room_id)
+        room_list = room.models.mobile_room.objects.filter(virtual_room_id=v_virtual_room_id)
     elif(platform == 'pc'):
-        ms_list = room.models.pc_room.objects.filter(virtual_room_id=v_virtual_room_id)
-    return ms_list
+        room_list = room.models.pc_room.objects.filter(virtual_room_id=v_virtual_room_id)
+    return room_list
 
 
 def get_virtual_room_by_id(platform, v_id):
@@ -337,6 +337,12 @@ def modify_virtual_room(request, platform):
     record.is_valid            = is_valid
     record.topN                = topN    
     record.save()
+    
+    room_list = django_get_rooms_in_virtual_room(platform, virtual_room_id)
+    for one_room in room_list:
+        one_room.virtual_room_id = virtual_room_id
+        one_room.virtual_room_name = virtual_room_name
+        one_room.save()
         
     output += 'modify success, id=%d, name=%s, valid=%d, topN=%d' % (record.virtual_room_id, record.virtual_room_name, record.is_valid, record.topN)
     return_datas['success'] = True
@@ -361,9 +367,15 @@ def delete_virtual_room(request, platform):
         return_datas['success'] = False
         return_datas['data'] = output
         return HttpResponse(json.dumps(return_datas))
-   
+    
     record = records[0] 
     record.delete()
+    
+    room_list = django_get_rooms_in_virtual_room(platform, virtual_room_id)
+    for one_room in room_list:
+        one_room.virtual_room_id = -1
+        one_room.virtual_room_name = 'NotExist'
+        one_room.save()
         
     output += 'delete success, id=%d, name=%s, valid=%d, topN=%d' % (virtual_room_id, virtual_room_name, is_valid, topN)
     return_datas['success'] = True
