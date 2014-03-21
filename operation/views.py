@@ -293,6 +293,30 @@ def operation_cmp(op1, op2):
         else:
             return 1            
 
+
+def delete_wrong_operation(request, platform): 
+    print request.REQUEST
+    
+    output = ''
+    operation_list = []
+    operations = get_operation_local(platform)
+    
+    ids = request.REQUEST['ids']    
+    id_list = ids.split(',')
+    for the_id in id_list:
+        one_list = operations.filter(id=the_id)
+        operation_list.extend(one_list) 
+    
+    for one_operation in operation_list:
+        one_operation.delete()        
+    
+    return_datas = {}
+    output += 'delete success, ids=%s' % (ids)
+    return_datas['success'] = True
+    return_datas['data'] = output        
+    return HttpResponse(json.dumps(return_datas))
+    
+
     
 def do_selected_operations(request, platform):  
     output = ''

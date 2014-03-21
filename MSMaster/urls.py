@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     url(r'^test_select/([^/]+)/$',              'task.views.test_select'),
     url(r'^get_operation_list/([^/]+)/$',       'operation.views.get_operation_list'),
     url(r'^show_operation_info/([^/]+)/$',      'operation.views.show_operation_list'),
+    url(r'^delete_wrong_operation/([^/]+)/$',   'operation.views.delete_wrong_operation'),
     url(r'^do_selected_operations/([^/]+)/$',   'operation.views.do_selected_operations'),
     url(r'^do_all_operations/([^/]+)/$',        'operation.views.do_all_operations'),
 )
