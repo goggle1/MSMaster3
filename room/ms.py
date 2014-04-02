@@ -717,6 +717,9 @@ class MS_GROUP:
         topN1 = 50000
         topN2 = 100000
         topN3 = 200000
+        self.find_num_topN_50k  = 0
+        self.find_num_topN_100k = 0
+        self.find_num_topN_200k = 0
         
         task_num = 0
         for one_task in task_list:
