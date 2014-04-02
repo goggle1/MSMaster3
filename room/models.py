@@ -19,6 +19,16 @@ class mobile_room(models.Model):
     topN                = models.IntegerField(blank = False, null = True,  verbose_name = u"topN") 
     virtual_room_id     = models.IntegerField(blank = False, null = True,  verbose_name = u"virtual_room_id")  
     virtual_room_name   = models.CharField(null = True, max_length=64, verbose_name = u"virtual_room_name")
+    add_m               = models.IntegerField(blank = False, null = True, verbose_name = u"add_m")
+    add_N               = models.IntegerField(blank = False, null = True, verbose_name = u"add_N")
+    add_mN              = models.IntegerField(blank = False, null = True, verbose_name = u"add_mN")
+    keep_m              = models.IntegerField(blank = False, null = True, verbose_name = u"keep_m")
+    keep_N              = models.IntegerField(blank = False, null = True, verbose_name = u"keep_N")
+    keep_mN             = models.IntegerField(blank = False, null = True, verbose_name = u"keep_mN")
+    delete_mN           = models.IntegerField(blank = False, null = True, verbose_name = u"delete_mN")
+    percent_50k         = models.FloatField(blank = False, null = True, verbose_name = u"percent_50k")
+    percent_100k        = models.FloatField(blank = False, null = True, verbose_name = u"percent_100k")
+    percent_200k        = models.FloatField(blank = False, null = True, verbose_name = u"percent_200k")
     
     def todict(self):
         dic = {}
@@ -36,6 +46,16 @@ class mobile_room(models.Model):
         dic['topN'] = str(self.topN)
         dic['virtual_room_id'] = str(self.virtual_room_id)
         dic['virtual_room_name'] = str(self.virtual_room_name)
+        dic['add_m']        = str(self.add_m)
+        dic['add_N']        = str(self.add_N)
+        dic['add_mN']       = str(self.add_mN)
+        dic['keep_m']       = str(self.keep_m)
+        dic['keep_N']       = str(self.keep_N)
+        dic['keep_mN']      = str(self.keep_mN)
+        dic['delete_mN']    = str(self.delete_mN)
+        dic['percent_50k']  = str(self.percent_50k)
+        dic['percent_100k'] = str(self.percent_100k)
+        dic['percent_200k'] = str(self.percent_200k)
         return dic
     
     class Meta:
@@ -59,6 +79,16 @@ class pc_room(models.Model):
     topN                = models.IntegerField(blank = False, null = True,  verbose_name = u"topN") 
     virtual_room_id     = models.IntegerField(blank = False, null = True,  verbose_name = u"virtual_room_id")  
     virtual_room_name   = models.CharField(null = True, max_length=64, verbose_name = u"virtual_room_name")
+    add_m               = models.IntegerField(blank = False, null = True, verbose_name = u"add_m")
+    add_N               = models.IntegerField(blank = False, null = True, verbose_name = u"add_N")
+    add_mN              = models.IntegerField(blank = False, null = True, verbose_name = u"add_mN")
+    keep_m              = models.IntegerField(blank = False, null = True, verbose_name = u"keep_m")
+    keep_N              = models.IntegerField(blank = False, null = True, verbose_name = u"keep_N")
+    keep_mN             = models.IntegerField(blank = False, null = True, verbose_name = u"keep_mN")
+    delete_mN           = models.IntegerField(blank = False, null = True, verbose_name = u"delete_mN")
+    percent_50k         = models.FloatField(blank = False, null = True, verbose_name = u"percent_50k")
+    percent_100k        = models.FloatField(blank = False, null = True, verbose_name = u"percent_100k")
+    percent_200k        = models.FloatField(blank = False, null = True, verbose_name = u"percent_200k")
     
     def todict(self):
         dic = {}
@@ -76,6 +106,16 @@ class pc_room(models.Model):
         dic['topN'] = str(self.topN)
         dic['virtual_room_id'] = str(self.virtual_room_id)
         dic['virtual_room_name'] = str(self.virtual_room_name)
+        dic['add_m']        = str(self.add_m)
+        dic['add_N']        = str(self.add_N)
+        dic['add_mN']       = str(self.add_mN)
+        dic['keep_m']       = str(self.keep_m)
+        dic['keep_N']       = str(self.keep_N)
+        dic['keep_mN']      = str(self.keep_mN)
+        dic['delete_mN']    = str(self.delete_mN)
+        dic['percent_50k']  = str(self.percent_50k)
+        dic['percent_100k'] = str(self.percent_100k)
+        dic['percent_200k'] = str(self.percent_200k)
         return dic
     
     class Meta:

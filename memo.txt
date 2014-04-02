@@ -25,4 +25,14 @@ CREATE TABLE pc_virtual_room(
 );
 
 ALTER TABLE mobile_room ADD (topN int, virtual_room_id int, virtual_room_name varchar(64));
-ALTER TABLE pc_room ADD (topN int, virtual_room_id int, virtual_room_name varchar(64));
+ALTER TABLE pc_room     ADD (topN int, virtual_room_id int, virtual_room_name varchar(64));
+
+ALTER TABLE mobile_virtual_room ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+ALTER TABLE pc_virtual_room     ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+
+ALTER TABLE mobile_room ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+ALTER TABLE pc_room     ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+
+ALTER TABLE mobile_ms ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+ALTER TABLE pc_ms     ADD (add_m int, add_N int, add_mN int, keep_m int, keep_N int, keep_mN int, delete_mN int, percent_50k double, percent_100k double, percent_200k double);
+

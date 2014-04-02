@@ -560,6 +560,8 @@ def ms_do_add_hot_tasks(platform, record):
     
     file_name = 'ms_hot_tasks_%s_%d_%d.log' % (record.name, suggest_task_number, num_dispatching)
     log_file = open(file_name, 'w')
+    
+    ms_all.set_log(log_file)
             
     num = 0
     result = False
@@ -585,10 +587,11 @@ def ms_do_add_hot_tasks(platform, record):
         else:
             print '[%s, %e]%s, exist at %d, %s' % (task1.online_time, task1.temperature0, task1.hash, one_ms.db_record.server_id, one_ms.db_record.controll_ip)
             log_file.write('[%s, %e] %s, exist at %d, %s\n' % (task1.online_time, task1.temperature0, task1.hash, one_ms.db_record.server_id, one_ms.db_record.controll_ip))
-
-    log_file.close()
+   
     
     ms_all.do_dispatch()
+    
+    log_file.close()
         
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
@@ -679,7 +682,9 @@ def ms_do_delete_cold_tasks(platform, record):
         return True
     
     file_name = 'ms_cold_tasks_%s_%d_%d.log' % (record.name, suggest_task_number, num_deleting)
-    log_file = open(file_name, 'w')    
+    log_file = open(file_name, 'w') 
+    
+    ms_all.set_log(log_file)   
             
     real_delete_num = 0
     result = False
@@ -707,10 +712,10 @@ def ms_do_delete_cold_tasks(platform, record):
             log_file.write('[%s, %e]%s non_exist\n' % (task1.online_time, task1.temperature0, task1.hash))
     log_file.write('rule 1 end\n')       
     print 'after rule 1, total_delete_num=%d, real_delete_num=%d' % (total_delete_num, real_delete_num) 
+            
+    ms_all.do_delete()
     
     log_file.close()
-    
-    ms_all.do_delete()
         
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)

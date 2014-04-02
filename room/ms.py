@@ -37,6 +37,9 @@ class MS_INFO:
         self.num_actual_be_deleted = 0
         self.platform = v_platform
         self.db_record = v_db_record
+        self.find_num_topN_50k  = 0
+        self.find_num_topN_100k = 0
+        self.find_num_topN_200k = 0
         
         
 class MS_GROUP:
@@ -57,6 +60,10 @@ class MS_GROUP:
         self.round_robin_index = 0
         
         self.platform = v_platform
+        
+        self.find_num_topN_50k  = 0
+        self.find_num_topN_100k = 0
+        self.find_num_topN_200k = 0
         
         if(v_ms_list != None):
             for ms in v_ms_list:
@@ -374,7 +381,7 @@ class MS_GROUP:
         values['sign']      = sign
                 
         url = 'http://%s:%d/api/?cli=ms&cmd=report_hot_task' % (self.MACROSS_IP, self.MACROSS_PORT)
-        #print 'ms_id=%d, ms_ip=%s, task_num=%d, url=%s' % (one.db_record.server_id, one.db_record.controll_ip, num, url)
+        print 'ms_id=%d, ms_ip=%s, task_num=%d, url=%s' % (one.db_record.server_id, one.db_record.controll_ip, num, url)
         if(self.log_file != None):
             self.log_file.write('ms_id=%d, ms_ip=%s, task_num=%d, url=%s\n' % (one.db_record.server_id, one.db_record.controll_ip, num, url))
         
@@ -454,7 +461,7 @@ class MS_GROUP:
         values['sign']      = sign
                 
         url = 'http://%s:%d/api/?cli=ms&cmd=report_cold_task' % (self.MACROSS_IP, self.MACROSS_PORT)        
-        #print 'ms_id=%d, ms_ip=%s, task_num=%d, url=%s' % (one.db_record.server_id, one.db_record.controll_ip, num, url)
+        print 'ms_id=%d, ms_ip=%s, task_num=%d, url=%s' % (one.db_record.server_id, one.db_record.controll_ip, num, url)
         if(self.log_file != None):
             self.log_file.write('ms_id=%d, ms_ip=%s, task_num=%d, url=%s\n' % (one.db_record.server_id, one.db_record.controll_ip, num, url))
         
@@ -664,7 +671,67 @@ class MS_GROUP:
                    
         return True
         
-             
+    
+    def percent_topNNN_for_ms(self, task_list):
+        print 'percent_topNNN_for_ms'
+        if(self.log_file != None):
+            self.log_file.write('percent_topNNN_for_ms begin\n')
+        
+        topN1 = 50000
+        topN2 = 100000
+        topN3 = 200000
+        for one_ms in self.ms_list:
+            one_ms.find_num_topN_50k    = 0
+            one_ms.find_num_topN_100k   = 0
+            one_ms.find_num_topN_200k   = 0
+            task_num = 0
+            for one_task in task_list:
+                if(one_ms.task_dict.has_key(one_task['hash']) == True): 
+                    if(task_num<topN1):
+                        one_ms.find_num_topN_50k += 1   
+                    elif(task_num<topN2):
+                        one_ms.find_num_topN_100k += 1
+                    elif(task_num<topN3):
+                        one_ms.find_num_topN_200k += 1 
+                task_num += 1    
+                if(task_num>=topN3):            
+                    break 
+            one_ms.db_record.percent_50k    = 100.0*float(one_ms.find_num_topN_50k)/float(topN1)
+            one_ms.db_record.percent_100k   = 100.0*float(one_ms.find_num_topN_100k)/float(topN2)
+            one_ms.db_record.percent_200k   = 100.0*float(one_ms.find_num_topN_200k)/float(topN3)
+            one_ms.db_record.save()            
+            if(self.log_file != None):
+                self.log_file.write('ms: %d[%s] %f, %f, %f\n'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
+                                                               one_ms.db_record.percent_50k, one_ms.db_record.percent_100k, one_ms.db_record.percent_200k))
+                               
+        return True
+    
+    
+    def percent_topNNN_for_group(self, task_list):
+        print 'percent_topNNN_for_group'
+        if(self.log_file != None):
+            self.log_file.write('percent_topNNN_for_group begin\n')
+        
+        topN1 = 50000
+        topN2 = 100000
+        topN3 = 200000
+        
+        task_num = 0
+        for one_task in task_list:
+            if(self.find_ms_by_task(one_task['hash']) != None): 
+                if(task_num<topN1):
+                    self.find_num_topN_50k += 1   
+                elif(task_num<topN2):
+                    self.find_num_topN_100k += 1
+                elif(task_num<topN3):
+                    self.find_num_topN_200k += 1 
+            task_num += 1    
+            if(task_num>=topN3):            
+                break
+                               
+        return True
+          
+               
     def delete_complement(self, task_dict):
         if(self.log_file != None):
             self.log_file.write('ms_list: %d, ms_list_allowed_delete: %d \n' % (len(self.ms_list), len(self.ms_list_allowed_delete)))
@@ -737,10 +804,14 @@ class MS_GROUP:
     def report_distribute_summary(self):        
         for one_ms in self.ms_list_allowed_add:
             distribute_num_diff = one_ms.distribute_num_for_ALL - one_ms.distribute_num_for_topN
-            print '%s[%s], %s, %d, %d, %d, %d' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
+            one_ms.db_record.add_m = one_ms.distribute_num_for_topN
+            one_ms.db_record.add_N = distribute_num_diff
+            one_ms.db_record.add_mN = one_ms.distribute_num_for_ALL
+            one_ms.db_record.save()            
+            print 'ms: %s[%s], %s, %d, %d, %d, %d' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
                                                   one_ms.distribute_num_for_topN, distribute_num_diff, one_ms.distribute_num_for_ALL)
             if(self.log_file != None):
-                self.log_file.write('%s[%s], %s, %d, %d, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
+                self.log_file.write('ms: %s[%s], %s, %d, %d, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
                                                                       one_ms.distribute_num_for_topN, distribute_num_diff, one_ms.distribute_num_for_ALL))
         return True
     
@@ -748,9 +819,14 @@ class MS_GROUP:
     def report_delete_summary(self):        
         for one_ms in self.ms_list_allowed_delete:
             keep_num_diff = one_ms.keep_num_for_ALL - one_ms.keep_num_for_topN
-            print '%s[%s], %s, %d, %d, %d, %d, %d, %d' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
+            one_ms.db_record.keep_m = one_ms.keep_num_for_topN
+            one_ms.db_record.keep_N = keep_num_diff
+            one_ms.db_record.keep_mN = one_ms.keep_num_for_ALL
+            one_ms.db_record.delete_mN = one_ms.num_actual_be_deleted
+            one_ms.db_record.save()
+            print 'ms: %s[%s], %s, %d, %d, %d, %d, %d, %d' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
                                                   one_ms.keep_num_for_topN, keep_num_diff, one_ms.keep_num_for_ALL, one_ms.num_should_be_deleted, one_ms.num_actual_be_deleted)
             if(self.log_file != None):
-                self.log_file.write('%s[%s], %s, %d, %d, %d, %d, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
+                self.log_file.write('ms: %s[%s], %s, %d, %d, %d, %d, %d, %d\n' % (one_ms.db_record.server_name, one_ms.db_record.room_name, one_ms.db_record.controll_ip, one_ms.init_task_num, \
                                                   one_ms.keep_num_for_topN, keep_num_diff, one_ms.keep_num_for_ALL, one_ms.num_should_be_deleted, one_ms.num_actual_be_deleted))
         return True

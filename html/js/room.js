@@ -58,7 +58,17 @@ var roomJS = function(){
                 'check_time',
                 'topN',
                 'virtual_room_id',
-                'virtual_room_name'
+                'virtual_room_name',
+                'add_m',
+                'add_N',
+                'add_mN',
+                'keep_m',
+                'keep_N',
+                'keep_mN',
+                'delete_mN',
+                'percent_50k',
+                'percent_100k',
+                'percent_200k'
             ]
         });
 
@@ -74,13 +84,23 @@ var roomJS = function(){
             {header : 'task_number', id : 'task_number', dataIndex : 'task_number', sortable : true},
             {header : 'total_disk_space', id : 'total_disk_space', dataIndex : 'total_disk_space', sortable : true, renderer : disk_size},
             {header : 'free_disk_space', id : 'free_disk_space', dataIndex : 'free_disk_space', sortable : true, renderer : disk_status},
-            {header : 'suggest_task_number', id : 'suggest_task_number', dataIndex : 'suggest_task_number', sortable : true},
-            {header : 'num_dispatching', id : 'num_dispatching', dataIndex : 'num_dispatching', sortable : true},
-            {header : 'num_deleting', id : 'num_deleting', dataIndex : 'num_deleting', sortable : true},                
-            {header : 'check_time', id : 'check_time', dataIndex : 'check_time', sortable : true, xtype: 'datecolumn', format : 'Y-m-d H:i:s'},
+            {header : 'suggest_task_number', id : 'suggest_task_number', dataIndex : 'suggest_task_number', sortable : true, hidden : true},
+            {header : 'num_dispatching', id : 'num_dispatching', dataIndex : 'num_dispatching', sortable : true, hidden : true},
+            {header : 'num_deleting', id : 'num_deleting', dataIndex : 'num_deleting', sortable : true, hidden : true},                
+            {header : 'check_time', id : 'check_time', dataIndex : 'check_time', sortable : true, xtype: 'datecolumn', format : 'Y-m-d H:i:s', hidden : true},
             {header : 'topN', id : 'topN', dataIndex : 'topN', sortable : true},
             {header : 'virtual_room_id', id : 'virtual_room_id', dataIndex : 'virtual_room_id', sortable : true},
-            {header : 'virtual_room_name', id : 'virtual_room_name', dataIndex : 'virtual_room_name', sortable : true, width: 200}
+            {header : 'virtual_room_name', id : 'virtual_room_name', dataIndex : 'virtual_room_name', sortable : true},
+            {header : 'add_m', id : 'add_m', dataIndex : 'add_m', sortable : true, hidden : true},
+            {header : 'add_N', id : 'add_N', dataIndex : 'add_N', sortable : true, hidden : true}, 
+            {header : 'add_mN', id : 'add_mN', dataIndex : 'add_mN', sortable : true},
+            {header : 'keep_m', id : 'keep_m', dataIndex : 'keep_m', sortable : true, hidden : true},
+            {header : 'keep_N', id : 'keep_N', dataIndex : 'keep_N', sortable : true, hidden : true},
+            {header : 'keep_mN', id : 'keep_mN', dataIndex : 'keep_mN', sortable : true},
+            {header : 'delete_mN', id : 'delete_mN', dataIndex : 'delete_mN', sortable : true},
+            {header : 'percent_50k', id : 'percent_50k', dataIndex : 'percent_50k', sortable : true},
+            {header : 'percent_100k', id : 'percent_100k', dataIndex : 'percent_100k', sortable : true},
+            {header : 'percent_200k', id : 'percent_200k', dataIndex : 'percent_200k', sortable : true, width: 200}
         ]);
     
         var room_page = new Ext.PagingToolbar({
@@ -881,9 +901,9 @@ var roomJS = function(){
                     forceSelection : true,
                     selectOnFocus : true,
                     editable: false,
-	                valueField: 'virtual_room_id',
-	                displayField: 'virtual_room_name',
-	                triggerAction: 'all',	
+                    valueField: 'virtual_room_id',
+                    displayField: 'virtual_room_name',
+                    triggerAction: 'all',   
                     allowBlank: false,
                     blankText:'虚拟机房ID不能为空'
                 },

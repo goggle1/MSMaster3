@@ -31,7 +31,17 @@ var virtual_roomJS = function(){
                 'task_number',
                 'total_disk_space',
                 'free_disk_space',
-                'topN'
+                'topN',
+                'add_m',
+                'add_N',
+                'add_mN',
+                'keep_m',
+                'keep_N',
+                'keep_mN',
+                'delete_mN',
+                'percent_50k',
+                'percent_100k',
+                'percent_200k'
             ]
         });
 
@@ -48,7 +58,17 @@ var virtual_roomJS = function(){
             {header : 'task_number', id : 'task_number', dataIndex : 'task_number', sortable : true},
             {header : 'total_disk_space', id : 'total_disk_space', dataIndex : 'total_disk_space', sortable : true, renderer : disk_size},
             {header : 'free_disk_space', id : 'free_disk_space', dataIndex : 'free_disk_space', sortable : true, renderer : disk_status},
-            {header : 'topN', id : 'topN', dataIndex : 'topN', sortable : true, width: 200} 
+            {header : 'topN', id : 'topN', dataIndex : 'topN', sortable : true},
+            {header : 'add_m', id : 'add_m', dataIndex : 'add_m', sortable : true, hidden : true},
+            {header : 'add_N', id : 'add_N', dataIndex : 'add_N', sortable : true, hidden : true}, 
+            {header : 'add_mN', id : 'add_mN', dataIndex : 'add_mN', sortable : true},
+            {header : 'keep_m', id : 'keep_m', dataIndex : 'keep_m', sortable : true, hidden : true},
+            {header : 'keep_N', id : 'keep_N', dataIndex : 'keep_N', sortable : true, hidden : true},
+            {header : 'keep_mN', id : 'keep_mN', dataIndex : 'keep_mN', sortable : true},
+            {header : 'delete_mN', id : 'delete_mN', dataIndex : 'delete_mN', sortable : true},
+            {header : 'percent_50k', id : 'percent_50k', dataIndex : 'percent_50k', sortable : true},
+            {header : 'percent_100k', id : 'percent_100k', dataIndex : 'percent_100k', sortable : true},
+            {header : 'percent_200k', id : 'percent_200k', dataIndex : 'percent_200k', sortable : true, width: 200}
         ]);
     
         var room_page = new Ext.PagingToolbar({
@@ -99,9 +119,21 @@ var virtual_roomJS = function(){
                 iconCls: 'del',
                 handler: self.delete_virtual_room
             },'-',{             
-                text: '统计盘点',               
+                text: '统计汇总',               
                 iconCls: 'sync',
                 handler: self.stat_virtual_room
+            },'-',{             
+                text: '分发预算',               
+                iconCls: 'sync',
+                handler: self.virtual_room_simulate_add
+            },'-',{             
+                text: '删除预算',               
+                iconCls: 'sync',
+                handler: self.virtual_room_simulate_delete
+            },'-',{             
+                text: '最热占比计算',               
+                iconCls: 'sync',
+                handler: self.virtual_room_percent_topN
             },'-',{             
                 text: '刷新列表',               
                 iconCls: 'refresh',
@@ -708,7 +740,7 @@ var virtual_roomJS = function(){
         var win = new Ext.Window({
             width:400,height:110,minWidth:200,minHeight:100,
             autoScroll:'auto',
-            title : "统计盘点，汇总虚拟机房内信息",
+            title : "统计汇总，汇总虚拟机房内信息",
             id : "stat_virtual_room_win_" + self.plat,
             //renderTo: "ext_room",
             collapsible: true,
@@ -750,6 +782,252 @@ var virtual_roomJS = function(){
         });
     };
         
+    this.virtual_room_simulate_add = function() 
+    {
+        //避免win的重复生成
+        if(Ext.get("virtual_room_simulate_add_win_" + self.plat)){
+            Ext.getCmp("virtual_room_simulate_add_win_" + self.plat).show();
+            return true;
+        }
+        
+        var virtual_room_simulate_add_form = new Ext.FormPanel({
+            id: 'virtual_room_simulate_add_form',
+            autoWidth: true,//自动调整宽度
+            url:'',
+            frame:true,
+            monitorValid : true,
+            bodyStyle:'padding:5px 5px 0',
+            labelWidth:150,
+            defaults:{xtype:'textfield',width:200},
+            items: [                                    
+                {
+                    xtype:'checkbox',
+                    id: 'start_now',
+                    name: 'start_now',
+                    //align:'left',
+                    fieldLabel:'是否立即执行',
+                    checked: false
+                }   
+            ],
+            buttons: [{
+                text: '确定',
+                handler: self.virtualRoomSimulateAddEnd,
+                formBind : true
+            },{
+                text: '取消',
+                handler: function(){Ext.getCmp("virtual_room_simulate_add_win_" + self.plat).close();}
+            }]
+        });
+        
+        var win = new Ext.Window({
+            width:400,height:110,minWidth:200,minHeight:100,
+            autoScroll:'auto',
+            title : "分发预算，只计算，并不分发",
+            id : "virtual_room_simulate_add_win_" + self.plat,
+            //renderTo: "ext_room",
+            collapsible: true,
+            modal:false,    //True 表示为当window显示时对其后面的一切内容进行遮罩，false表示为限制对其它UI元素的语法（默认为 false
+            //所谓布局就是指容器组件中子元素的分布，排列组合方式
+            layout: 'form',//layout布局方式为form
+            maximizable:true,
+            minimizable:false,
+            items: virtual_room_simulate_add_form
+        }).show();
+    }
+    
+    this.virtualRoomSimulateAddEnd = function() {
+        Ext.getCmp("virtual_room_simulate_add_form").form.submit({
+            waitMsg : '正在修改......',
+            url : '/virtual_room_simulate_add/' + self.plat + '/',
+            method : 'post',
+            timeout : 5000,//5秒超时, 
+            params : '',
+            success : function(form, action) {
+                var result = Ext.util.JSON.decode(action.response.responseText);
+                Ext.getCmp("virtual_room_simulate_add_win_" + self.plat).close();
+                Ext.MessageBox.alert('成功', result.data);
+                //self.task_store.reload();         //重新载入数据，即根据当前页面的条件，刷新用户页面
+            },
+            failure : function(form, action) {
+                alert('失败:' + action.response.responseText);
+                if(typeof(action.response) == 'undefined'){
+                    Ext.MessageBox.alert('警告','添加失败，请重新添加！');
+                } else {
+                    var result = Ext.util.JSON.decode(action.response.responseText);
+                    if(action.failureType == Ext.form.Action.SERVER_INVALID){
+                        Ext.MessageBox.alert('警告', result.data);
+                    }else{
+                        Ext.MessageBox.alert('警告','表单填写异常，请重新填写！');
+                    }
+                }
+            }
+        });
+    };
+    
+    this.virtual_room_simulate_delete = function() 
+    {
+        //避免win的重复生成
+        if(Ext.get("virtual_room_simulate_delete_win_" + self.plat)){
+            Ext.getCmp("virtual_room_simulate_delete_win_" + self.plat).show();
+            return true;
+        }
+        
+        var virtual_room_simulate_delete_form = new Ext.FormPanel({
+            id: 'virtual_room_simulate_delete_form',
+            autoWidth: true,//自动调整宽度
+            url:'',
+            frame:true,
+            monitorValid : true,
+            bodyStyle:'padding:5px 5px 0',
+            labelWidth:150,
+            defaults:{xtype:'textfield',width:200},
+            items: [                                    
+                {
+                    xtype:'checkbox',
+                    id: 'start_now',
+                    name: 'start_now',
+                    //align:'left',
+                    fieldLabel:'是否立即执行',
+                    checked: false
+                }   
+            ],
+            buttons: [{
+                text: '确定',
+                handler: self.virtualRoomSimulateDeleteEnd,
+                formBind : true
+            },{
+                text: '取消',
+                handler: function(){Ext.getCmp("virtual_room_simulate_delete_win_" + self.plat).close();}
+            }]
+        });
+        
+        var win = new Ext.Window({
+            width:400,height:110,minWidth:200,minHeight:100,
+            autoScroll:'auto',
+            title : "删除预算，只计算，并不删除",
+            id : "virtual_room_simulate_delete_win_" + self.plat,
+            //renderTo: "ext_room",
+            collapsible: true,
+            modal:false,    //True 表示为当window显示时对其后面的一切内容进行遮罩，false表示为限制对其它UI元素的语法（默认为 false
+            //所谓布局就是指容器组件中子元素的分布，排列组合方式
+            layout: 'form',//layout布局方式为form
+            maximizable:true,
+            minimizable:false,
+            items: virtual_room_simulate_delete_form
+        }).show();
+    }
+    
+    this.virtualRoomSimulateDeleteEnd = function() {
+        Ext.getCmp("virtual_room_simulate_delete_form").form.submit({
+            waitMsg : '正在修改......',
+            url : '/virtual_room_simulate_delete/' + self.plat + '/',
+            method : 'post',
+            timeout : 5000,//5秒超时, 
+            params : '',
+            success : function(form, action) {
+                var result = Ext.util.JSON.decode(action.response.responseText);
+                Ext.getCmp("virtual_room_simulate_delete_win_" + self.plat).close();
+                Ext.MessageBox.alert('成功', result.data);
+                //self.task_store.reload();         //重新载入数据，即根据当前页面的条件，刷新用户页面
+            },
+            failure : function(form, action) {
+                alert('失败:' + action.response.responseText);
+                if(typeof(action.response) == 'undefined'){
+                    Ext.MessageBox.alert('警告','添加失败，请重新添加！');
+                } else {
+                    var result = Ext.util.JSON.decode(action.response.responseText);
+                    if(action.failureType == Ext.form.Action.SERVER_INVALID){
+                        Ext.MessageBox.alert('警告', result.data);
+                    }else{
+                        Ext.MessageBox.alert('警告','表单填写异常，请重新填写！');
+                    }
+                }
+            }
+        });
+    };
+    
+    this.virtual_room_percent_topN = function() 
+    {
+        //避免win的重复生成
+        if(Ext.get("virtual_room_percent_topN_win_" + self.plat)){
+            Ext.getCmp("virtual_room_percent_topN_win_" + self.plat).show();
+            return true;
+        }
+        
+        var virtual_room_percent_topN_form = new Ext.FormPanel({
+            id: 'virtual_room_percent_topN_form',
+            autoWidth: true,//自动调整宽度
+            url:'',
+            frame:true,
+            monitorValid : true,
+            bodyStyle:'padding:5px 5px 0',
+            labelWidth:150,
+            defaults:{xtype:'textfield',width:200},
+            items: [                                    
+                {
+                    xtype:'checkbox',
+                    id: 'start_now',
+                    name: 'start_now',
+                    //align:'left',
+                    fieldLabel:'是否立即执行',
+                    checked: false
+                }   
+            ],
+            buttons: [{
+                text: '确定',
+                handler: self.virtualRoomPercentTopNEnd,
+                formBind : true
+            },{
+                text: '取消',
+                handler: function(){Ext.getCmp("virtual_room_percent_topN_win_" + self.plat).close();}
+            }]
+        });
+        
+        var win = new Ext.Window({
+            width:400,height:110,minWidth:200,minHeight:100,
+            autoScroll:'auto',
+            title : "最热占比计算，top5万，top10万，top20万",
+            id : "virtual_room_percent_topN_win_" + self.plat,
+            //renderTo: "ext_room",
+            collapsible: true,
+            modal:false,    //True 表示为当window显示时对其后面的一切内容进行遮罩，false表示为限制对其它UI元素的语法（默认为 false
+            //所谓布局就是指容器组件中子元素的分布，排列组合方式
+            layout: 'form',//layout布局方式为form
+            maximizable:true,
+            minimizable:false,
+            items: virtual_room_percent_topN_form
+        }).show();
+    }
+    
+    this.virtualRoomPercentTopNEnd = function() {
+        Ext.getCmp("virtual_room_percent_topN_form").form.submit({
+            waitMsg : '正在修改......',
+            url : '/virtual_room_percent_topN/' + self.plat + '/',
+            method : 'post',
+            timeout : 5000,//5秒超时, 
+            params : '',
+            success : function(form, action) {
+                var result = Ext.util.JSON.decode(action.response.responseText);
+                Ext.getCmp("virtual_room_percent_topN_win_" + self.plat).close();
+                Ext.MessageBox.alert('成功', result.data);
+                //self.task_store.reload();         //重新载入数据，即根据当前页面的条件，刷新用户页面
+            },
+            failure : function(form, action) {
+                alert('失败:' + action.response.responseText);
+                if(typeof(action.response) == 'undefined'){
+                    Ext.MessageBox.alert('警告','添加失败，请重新添加！');
+                } else {
+                    var result = Ext.util.JSON.decode(action.response.responseText);
+                    if(action.failureType == Ext.form.Action.SERVER_INVALID){
+                        Ext.MessageBox.alert('警告', result.data);
+                    }else{
+                        Ext.MessageBox.alert('警告','表单填写异常，请重新填写！');
+                    }
+                }
+            }
+        });
+    };
+    
     
     this.refresh_virtual_room_list = function() 
     {

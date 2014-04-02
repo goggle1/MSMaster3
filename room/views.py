@@ -482,7 +482,8 @@ def do_sync_room_status(platform, record):
      
 
 class ROOM_T:
-    def __init__(self, room_id, topN):
+    def __init__(self, room_id, topN, one_real_room = None):
+        self.real_room = one_real_room
         self.room_id = room_id
         self.topN = topN
         self.ms_group = None
