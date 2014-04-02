@@ -699,7 +699,9 @@ class MS_GROUP:
             one_ms.db_record.percent_50k    = 100.0*float(one_ms.find_num_topN_50k)/float(topN1)
             one_ms.db_record.percent_100k   = 100.0*float(one_ms.find_num_topN_100k)/float(topN2)
             one_ms.db_record.percent_200k   = 100.0*float(one_ms.find_num_topN_200k)/float(topN3)
-            one_ms.db_record.save()            
+            one_ms.db_record.save()  
+            print 'ms: %d[%s] %f, %f, %f'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
+                                           one_ms.db_record.percent_50k, one_ms.db_record.percent_100k, one_ms.db_record.percent_200k)       
             if(self.log_file != None):
                 self.log_file.write('ms: %d[%s] %f, %f, %f\n'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
                                                                one_ms.db_record.percent_50k, one_ms.db_record.percent_100k, one_ms.db_record.percent_200k))
