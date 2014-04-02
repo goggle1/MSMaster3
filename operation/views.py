@@ -266,13 +266,13 @@ def operation_type_int(v_type):
     result = 0
     type_dict = {   'sync_hash_db':1,               \
                     'sync_pay_medias':2,            \
-                    'upload_hits_num':3,            \
-                    'calc_hot_mean_hits_num':4,     \
-                    'calc_temperature':5,           \
-                    'sync_ms_db':6,                 \
-                    'sync_ms_status':7,             \
-                    'sync_room_db':8,               \
-                    'sync_room_status':9,           \
+                    'sync_ms_db':3,                 \
+                    'sync_ms_status':4,             \
+                    'sync_room_db':5,               \
+                    'sync_room_status':6,           \
+                    'upload_hits_num':7,            \
+                    'calc_hot_mean_hits_num':8,     \
+                    'calc_temperature':9,           \
                     'stat_virtual_room':10,         \
                     'delete_cold_tasks':11,         \
                     'add_hot_tasks':12,             \

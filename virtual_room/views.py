@@ -500,7 +500,6 @@ def do_virtual_room_simulate_delete(platform, record):
     virtual_rooms = django_get_virtual_room(platform)
     for one_virtual_room in virtual_rooms:
         one_virtual_room_simulate_delete(platform, one_virtual_room)
-        break
             
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
@@ -591,8 +590,7 @@ def do_virtual_room_percent_topN(platform, record):
     
     virtual_rooms = django_get_virtual_room(platform)
     for one_virtual_room in virtual_rooms:
-        one_virtual_room_percent_topN(platform, one_virtual_room)
-        break
+        one_virtual_room_percent_topN(platform, one_virtual_room)               
             
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
