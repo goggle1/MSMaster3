@@ -27,8 +27,9 @@ def hot_tasks_from_file(file_name):
     return task_list
 
 
-def hot_tasks_to_rooms(platform, file_name):    
-    log_file = open('hot_tasks_to_rooms.log', 'w')
+def hot_tasks_to_rooms(platform, file_name):   
+    log_name = '%s_hot_tasks_to_rooms.log' % (platform) 
+    log_file = open(log_name, 'w')
     log_file.write('platform=%s, file_name=%s\n' % (platform, file_name))
     
     task_list = hot_tasks_from_file(file_name)

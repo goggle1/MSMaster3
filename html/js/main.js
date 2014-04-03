@@ -299,8 +299,8 @@ function index_main(action_method, title_name, param) {
 		return true;
 	}
 	
-	ext_action_method = 'ext_'+action_method;
-	tab_id = ext_action_method + '_' + param;
+	var ext_action_method = 'ext_'+action_method;
+	var tab_id = ext_action_method + '_' + param;
 	if (Ext.get(tab_id)) {
 		Ext.getCmp('main_panel').setActiveTab(Ext.getCmp(tab_id));
 		return true;
@@ -326,10 +326,10 @@ function index_main(action_method, title_name, param) {
 		scripts: ['/static/js/'+action_method+'.js'],
 		callback: function() {
 			//参数分别为tab_id,tab_title
-			strLen = action_method.length; 
-			tmpChar = action_method.substring(0,1).toUpperCase();
-			postString = action_method.substring(1,strLen);
-			my_object = tmpChar + postString + '_' + param;
+			var strLen = action_method.length; 
+			var tmpChar = action_method.substring(0,1).toUpperCase();
+			var postString = action_method.substring(1,strLen);
+			var my_object = tmpChar + postString + '_' + param;
 			var _new = my_object + '= new ' + action_method + 'JS()';
 			eval(_new);
 			var _method = (my_object + "." + ext_action_method);			

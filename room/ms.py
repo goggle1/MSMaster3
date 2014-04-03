@@ -689,9 +689,9 @@ class MS_GROUP:
                 if(one_ms.task_dict.has_key(one_task['hash']) == True): 
                     if(task_num<topN1):
                         one_ms.find_num_topN_50k += 1   
-                    elif(task_num<topN2):
+                    if(task_num<topN2):
                         one_ms.find_num_topN_100k += 1
-                    elif(task_num<topN3):
+                    if(task_num<topN3):
                         one_ms.find_num_topN_200k += 1 
                 task_num += 1    
                 if(task_num>=topN3):            
@@ -700,11 +700,15 @@ class MS_GROUP:
             one_ms.db_record.percent_100k   = 100.0*float(one_ms.find_num_topN_100k)/float(topN2)
             one_ms.db_record.percent_200k   = 100.0*float(one_ms.find_num_topN_200k)/float(topN3)
             one_ms.db_record.save()  
-            print 'ms: %d[%s] %f, %f, %f'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
-                                           one_ms.db_record.percent_50k, one_ms.db_record.percent_100k, one_ms.db_record.percent_200k)       
+            print 'ms: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
+                                           one_ms.find_num_topN_50k, one_ms.db_record.percent_50k, \
+                                           one_ms.find_num_topN_100k, one_ms.db_record.percent_100k, \
+                                           one_ms.find_num_topN_200k, one_ms.db_record.percent_200k)       
             if(self.log_file != None):
-                self.log_file.write('ms: %d[%s] %f, %f, %f\n'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
-                                                               one_ms.db_record.percent_50k, one_ms.db_record.percent_100k, one_ms.db_record.percent_200k))
+                self.log_file.write('ms: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f\n'%(one_ms.db_record.server_id, one_ms.db_record.server_name, \
+                                           one_ms.find_num_topN_50k, one_ms.db_record.percent_50k, \
+                                           one_ms.find_num_topN_100k, one_ms.db_record.percent_100k, \
+                                           one_ms.find_num_topN_200k, one_ms.db_record.percent_200k))
                                
         return True
     
@@ -726,9 +730,9 @@ class MS_GROUP:
             if(self.find_ms_by_task(one_task['hash']) != None): 
                 if(task_num<topN1):
                     self.find_num_topN_50k += 1   
-                elif(task_num<topN2):
+                if(task_num<topN2):
                     self.find_num_topN_100k += 1
-                elif(task_num<topN3):
+                if(task_num<topN3):
                     self.find_num_topN_200k += 1 
             task_num += 1    
             if(task_num>=topN3):            

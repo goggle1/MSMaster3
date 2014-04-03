@@ -120,7 +120,7 @@ def do_virtual_room_add_tasks(platform, record):
         record.save()
     print 'virtual_room topN: %d' % (rooms_topN)
     
-    file_name = '%s_%s.log' % (record.type, str_virtual_room_id)
+    file_name = '%s_%s_%s.log' % (platform, record.type, str_virtual_room_id)
     log_file = open(file_name, 'w')
     
     (task_list, task_dict) = task.views.get_tasks_sql(platform)    
@@ -180,7 +180,7 @@ def do_virtual_room_add_tasks(platform, record):
     return True
 
 
-def one_virtual_room_simulate_add(platform, one_virtual_room):        
+def one_virtual_room_simulate_add(platform, one_virtual_room, task_list, task_dict):        
     rooms_in_virutal_room = django_get_rooms_in_virtual_room(platform, one_virtual_room.virtual_room_id) 
     
     room_list = []    
@@ -195,7 +195,7 @@ def one_virtual_room_simulate_add(platform, one_virtual_room):
         print 'virtual_room %d topN is None' % (one_virtual_room.virtual_room_id)
         return False
     
-    file_name = '%s_%d.log' % ('virtual_room_simulate_add', one_virtual_room.virtual_room_id)
+    file_name = '%s_%s_%d.log' % (platform, 'virtual_room_simulate_add', one_virtual_room.virtual_room_id)
     log_file = open(file_name, 'w')
     
     print 'virtual_room: %d, topN: %d' % (one_virtual_room.virtual_room_id, rooms_topN)
@@ -205,7 +205,7 @@ def one_virtual_room_simulate_add(platform, one_virtual_room):
     total_distribute_num_for_topN   = 0
     total_distribute_num_for_ALL    = 0
     
-    (task_list, task_dict) = task.views.get_tasks_sql(platform)    
+    #(task_list, task_dict) = task.views.get_tasks_sql(platform)    
         
     for one_room in room_list:
         ms_list = room.views.get_ms_list_in_room(platform, one_room.room_id)        
@@ -284,9 +284,11 @@ def do_virtual_room_simulate_add(platform, record):
     record.status = 1
     record.save()
 
+    (task_list, task_dict) = task.views.get_tasks_sql(platform)
+    
     virtual_rooms = django_get_virtual_room(platform)
     for one_virtual_room in virtual_rooms:
-        one_virtual_room_simulate_add(platform, one_virtual_room)
+        one_virtual_room_simulate_add(platform, one_virtual_room, task_list, task_dict)
         
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
@@ -331,7 +333,7 @@ def do_virtual_room_delete_tasks(platform, record):
         record.save()
     print 'virtual_room topN: %d' % (rooms_topN)
     
-    file_name = '%s_%s.log' % (record.type, str_virtual_room_id)
+    file_name = '%s_%s_%s.log' % (platform, record.type, str_virtual_room_id)
     log_file = open(file_name, 'w')
     
     (task_list, task_dict) = task.views.get_tasks_sql(platform)    
@@ -394,7 +396,7 @@ def do_virtual_room_delete_tasks(platform, record):
     return True
 
 
-def one_virtual_room_simulate_delete(platform, one_virtual_room):
+def one_virtual_room_simulate_delete(platform, one_virtual_room, task_list, task_dict):
     rooms_in_virutal_room = django_get_rooms_in_virtual_room(platform, one_virtual_room.virtual_room_id) 
     
     room_list = []    
@@ -409,7 +411,7 @@ def one_virtual_room_simulate_delete(platform, one_virtual_room):
         print 'virtual_room %d topN is None' % (one_virtual_room.virtual_room_id)
         return False
     
-    file_name = '%s_%d.log' % ('virtual_room_simulate_delete', one_virtual_room.virtual_room_id)
+    file_name = '%s_%s_%d.log' % (platform, 'virtual_room_simulate_delete', one_virtual_room.virtual_room_id)
     log_file = open(file_name, 'w')
     
     print 'virtual_room: %d, topN: %d' % (one_virtual_room.virtual_room_id, rooms_topN)
@@ -419,7 +421,7 @@ def one_virtual_room_simulate_delete(platform, one_virtual_room):
     total_keep_num_for_topN = 0
     total_keep_num_for_ALL = 0
     
-    (task_list, task_dict) = task.views.get_tasks_sql(platform)    
+    #(task_list, task_dict) = task.views.get_tasks_sql(platform)    
         
     for one_room in room_list:
         ms_list = room.views.get_ms_list_in_room(platform, one_room.room_id)
@@ -497,9 +499,11 @@ def do_virtual_room_simulate_delete(platform, record):
     record.status = 1
     record.save()
     
+    (task_list, task_dict) = task.views.get_tasks_sql(platform) 
+    
     virtual_rooms = django_get_virtual_room(platform)
     for one_virtual_room in virtual_rooms:
-        one_virtual_room_simulate_delete(platform, one_virtual_room)
+        one_virtual_room_simulate_delete(platform, one_virtual_room, task_list, task_dict)
             
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
@@ -512,7 +516,7 @@ def do_virtual_room_simulate_delete(platform, record):
     return True
 
 
-def one_virtual_room_percent_topN(platform, one_virtual_room):
+def one_virtual_room_percent_topN(platform, one_virtual_room, task_list, task_dict):
     rooms_in_virutal_room = django_get_rooms_in_virtual_room(platform, one_virtual_room.virtual_room_id) 
     
     room_list = []    
@@ -522,7 +526,7 @@ def one_virtual_room_percent_topN(platform, one_virtual_room):
         one_room = room.views.ROOM_T(room_id, room_topN, one_real_room)
         room_list.append(one_room)
     
-    file_name = '%s_%d.log' % ('one_virtual_room_percent_topN', one_virtual_room.virtual_room_id)
+    file_name = '%s_%s_%d.log' % (platform, 'one_virtual_room_percent_topN', one_virtual_room.virtual_room_id)
     log_file = open(file_name, 'w')
     
     print 'virtual_room: %d[%s]' % (one_virtual_room.virtual_room_id, one_virtual_room.virtual_room_name)
@@ -532,7 +536,7 @@ def one_virtual_room_percent_topN(platform, one_virtual_room):
     topN2 = 100000
     topN3 = 200000
     
-    (task_list, task_dict) = task.views.get_tasks_sql(platform)    
+    #(task_list, task_dict) = task.views.get_tasks_sql(platform)    
         
     for one_room in room_list:
         ms_list = room.views.get_ms_list_in_room(platform, one_room.room_id)
@@ -550,10 +554,14 @@ def one_virtual_room_percent_topN(platform, one_virtual_room):
         one_room.real_room.percent_100k = 100.0*float(ms_group.find_num_topN_100k)/float(topN2)
         one_room.real_room.percent_200k = 100.0*float(ms_group.find_num_topN_200k)/float(topN3)
         one_room.real_room.save()
-        print 'room: %d[%s] %f, %f, %f' % (one_room.real_room.room_id, one_room.real_room.room_name, \
-                                                       one_room.real_room.percent_50k, one_room.real_room.percent_100k, one_room.real_room.percent_200k)
-        log_file.write('room: %d[%s] %f, %f, %f\n' % (one_room.real_room.room_id, one_room.real_room.room_name, \
-                                                       one_room.real_room.percent_50k, one_room.real_room.percent_100k, one_room.real_room.percent_200k))
+        print 'room: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f' % (one_room.real_room.room_id, one_room.real_room.room_name, \
+                                                       ms_group.find_num_topN_50k, one_room.real_room.percent_50k, \
+                                                       ms_group.find_num_topN_100k, one_room.real_room.percent_100k, \
+                                                       ms_group.find_num_topN_200k, one_room.real_room.percent_200k)
+        log_file.write('room: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f\n' % (one_room.real_room.room_id, one_room.real_room.room_name, \
+                                                       ms_group.find_num_topN_50k, one_room.real_room.percent_50k, \
+                                                       ms_group.find_num_topN_100k, one_room.real_room.percent_100k, \
+                                                       ms_group.find_num_topN_200k, one_room.real_room.percent_200k))
               
     big_ms_group = None
     for one_room in room_list:
@@ -567,14 +575,18 @@ def one_virtual_room_percent_topN(platform, one_virtual_room):
         log_file.write('virtual_room %d contains no room\n' % (one_virtual_room.virtual_room_id))
         return False
     big_ms_group.percent_topNNN_for_group(task_list)
-    one_virtual_room.percent_50k  = 100.0*float(ms_group.find_num_topN_50k)/float(topN1)
-    one_virtual_room.percent_100k = 100.0*float(ms_group.find_num_topN_100k)/float(topN2)
-    one_virtual_room.percent_200k = 100.0*float(ms_group.find_num_topN_200k)/float(topN3)
+    one_virtual_room.percent_50k  = 100.0*float(big_ms_group.find_num_topN_50k)/float(topN1)
+    one_virtual_room.percent_100k = 100.0*float(big_ms_group.find_num_topN_100k)/float(topN2)
+    one_virtual_room.percent_200k = 100.0*float(big_ms_group.find_num_topN_200k)/float(topN3)
     one_virtual_room.save()   
-    print  'virtual_room: %d[%s] %f, %f, %f' % (one_virtual_room.virtual_room_id, one_virtual_room.virtual_room_name, \
-                                                       one_virtual_room.percent_50k, one_virtual_room.percent_100k, one_virtual_room.percent_200k)
-    log_file.write('virtual_room: %d[%s] %f, %f, %f\n' % (one_virtual_room.virtual_room_id, one_virtual_room.virtual_room_name, \
-                                                       one_virtual_room.percent_50k, one_virtual_room.percent_100k, one_virtual_room.percent_200k))
+    print  'virtual_room: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f' % (one_virtual_room.virtual_room_id, one_virtual_room.virtual_room_name, \
+                                                       big_ms_group.find_num_topN_50k,  one_virtual_room.percent_50k,  \
+                                                       big_ms_group.find_num_topN_100k, one_virtual_room.percent_100k, \
+                                                       big_ms_group.find_num_topN_200k, one_virtual_room.percent_200k)
+    log_file.write('virtual_room: %d[%s] [%d/50k]=%f, [%d/100k]=%f, [%d/200k]=%f\n' % (one_virtual_room.virtual_room_id, one_virtual_room.virtual_room_name, \
+                                                       big_ms_group.find_num_topN_50k,  one_virtual_room.percent_50k,  \
+                                                       big_ms_group.find_num_topN_100k, one_virtual_room.percent_100k, \
+                                                       big_ms_group.find_num_topN_200k, one_virtual_room.percent_200k))
     
     log_file.close() 
     
@@ -588,9 +600,11 @@ def do_virtual_room_percent_topN(platform, record):
     record.status = 1
     record.save()
     
+    (task_list, task_dict) = task.views.get_tasks_sql(platform)    
+    
     virtual_rooms = django_get_virtual_room(platform)
     for one_virtual_room in virtual_rooms:
-        one_virtual_room_percent_topN(platform, one_virtual_room)               
+        one_virtual_room_percent_topN(platform, one_virtual_room, task_list, task_dict)               
             
     now_time = time.localtime(time.time())        
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)

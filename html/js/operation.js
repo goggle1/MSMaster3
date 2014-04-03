@@ -97,6 +97,7 @@ var operationJS = function(){
                 iconCls: 'refresh',
                 handler: self.refresh_operation_list
             },'-',{
+            	id: 'delete_wrong_operation',
                 text: '删除错误操作',
                 iconCls: 'del',
                 handler: self.delete_wrong_operation
@@ -173,10 +174,12 @@ var operationJS = function(){
                         name:'status',
                         width:110
                     },"-",{
+                    	id:'search',
                         text:'搜索',
                         iconCls: 'search',
                         handler: query_operation
                     },"-",{
+                    	id:'reset',
                         text:'重置',
                         iconCls: 'reset',
                         handler: reset_query_operation

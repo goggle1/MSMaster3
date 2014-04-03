@@ -58,7 +58,7 @@ def get_room_macross(platform):
     if(platform == "mobile"):
         sql = "select l.room_id, l.room_name, l.is_valid from fs_server s, fs_mobile_location l where s.ml_room_id=l.room_id and s.is_valid=1 and l.is_valid=1 group by l.room_id order by l.room_id"
     elif(platform == "pc"):
-        sql = "select l.room_id, l.room_name, l.is_valid from fs_server s, fs_server_location l where s.room_id=l.room_id and s.is_valid=1 and l.is_valid=1 group by l.room_id order by l.room_id"
+        sql = "select l.room_id, l.room_name, l.is_valid from fs_server s, fs_server_location l where s.room_id=l.room_id and s.is_valid=1 and l.is_valid=1 and l.group_id!='' group by l.room_id order by l.room_id"
     db.execute(sql)
     
     for row in db.cur.fetchall():
@@ -170,7 +170,7 @@ def room_list_find(room_list, room_id):
     return None
 
 
-def do_add_hot_tasks(platform, record):
+def room_do_add_hot_tasks(platform, record):
     now_time = time.localtime(time.time())        
     begin_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     record.begin_time = begin_time
@@ -231,7 +231,7 @@ def do_add_hot_tasks(platform, record):
     
     print 'total_dispatch_num count: %d' % (total_dispatch_num)
     
-    file_name = 'hot_tasks_%s_%d_%d.log' % (room_id, suggest_task_number, num_dispatching)
+    file_name = '%s_%s_%s_%d_%d.log' % (platform, record.type, room_id, suggest_task_number, num_dispatching)
     log_file = open(file_name, 'w')
             
     num = 0
@@ -277,7 +277,7 @@ def do_add_hot_tasks(platform, record):
     return True
 
 
-def do_delete_cold_tasks(platform, record):
+def room_do_delete_cold_tasks(platform, record):
     now_time = time.localtime(time.time())        
     begin_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     record.begin_time = begin_time
@@ -336,7 +336,7 @@ def do_delete_cold_tasks(platform, record):
         record.save()
         return True
     
-    file_name = 'cold_tasks_%s_%d_%d.log' % (room_id, suggest_task_number, num_deleting)
+    file_name = '%s_%s_%s_%d_%d.log' % (platform, record.type, room_id, suggest_task_number, num_deleting)
     log_file = open(file_name, 'w')    
             
     real_delete_num = 0
@@ -494,7 +494,7 @@ class ROOM_T:
         self.keep_num_for_ALL = 0
 
 
-def do_auto_distribute_tasks(platform, record):
+def rooms_do_auto_distribute_tasks(platform, record):
     now_time = time.localtime(time.time())        
     begin_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     record.begin_time = begin_time
@@ -530,7 +530,7 @@ def do_auto_distribute_tasks(platform, record):
     else:
         rooms_topN = string.atoi(topN_value)
     
-    file_name = '%s_%s.log' % (record.type, url_params)
+    file_name = '%s_%s_%s.log' % (platform, record.type, url_params)
     log_file = open(file_name, 'w')
     
     (task_list, task_dict) = task.views.get_tasks_sql(platform)    
@@ -586,7 +586,7 @@ def do_auto_distribute_tasks(platform, record):
     return True
 
 
-def do_auto_delete_tasks(platform, record):
+def rooms_do_auto_delete_tasks(platform, record):
     now_time = time.localtime(time.time())        
     begin_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     record.begin_time = begin_time
@@ -623,7 +623,7 @@ def do_auto_delete_tasks(platform, record):
     else:
         rooms_topN = string.atoi(topN_value)
     
-    file_name = '%s_%s.log' % (record.type, url_params)
+    file_name = '%s_%s_%s.log' % (platform, record.type, url_params)
     log_file = open(file_name, 'w')
     log_file.write('do_auto_delete_tasks %s begin\n' % url_params)
     
@@ -736,8 +736,8 @@ def sync_room_db(request, platform):
     return response
 
 
-def add_hot_tasks(request, platform):
-    print 'add_hot_tasks'
+def room_add_hot_tasks(request, platform):
+    print 'room_add_hot_tasks'
     print request.REQUEST
     
     start_now = False
@@ -765,7 +765,7 @@ def add_hot_tasks(request, platform):
     dispatch_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     
     operation1 = {}
-    operation1['type'] = 'add_hot_tasks'
+    operation1['type'] = 'room_add_hot_tasks'
     operation1['name'] = v_room_id
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
@@ -789,7 +789,7 @@ def add_hot_tasks(request, platform):
     
     if(start_now == True):
         # start process
-        p = Process(target=do_add_hot_tasks, args=(platform, record))
+        p = Process(target=room_do_add_hot_tasks, args=(platform, record))
         p.start()    
     
     return_datas = {'success':True, 'data':output, "dispatch_time":dispatch_time}   
@@ -800,8 +800,8 @@ def add_hot_tasks(request, platform):
     return response
 
 
-def delete_cold_tasks(request, platform):
-    print 'delete_cold_tasks'   
+def room_delete_cold_tasks(request, platform):
+    print 'room_delete_cold_tasks'   
     print request.REQUEST  
     
     start_now = False
@@ -829,7 +829,7 @@ def delete_cold_tasks(request, platform):
     dispatch_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     
     operation1 = {}
-    operation1['type'] = 'delete_cold_tasks'
+    operation1['type'] = 'room_delete_cold_tasks'
     operation1['name'] = v_room_id
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
@@ -853,7 +853,7 @@ def delete_cold_tasks(request, platform):
     
     if(start_now == True):
         # start process
-        p = Process(target=do_delete_cold_tasks, args=(platform, record))
+        p = Process(target=room_do_delete_cold_tasks, args=(platform, record))
         p.start()  
     
     return_datas = {'success':True, 'data':output, "dispatch_time":dispatch_time}    
@@ -919,8 +919,8 @@ def sync_room_status(request, platform):
     return response
 
     
-def auto_distribute_tasks(request, platform):
-    cmd = 'auto_distribute_tasks'
+def rooms_auto_distribute_tasks(request, platform):
+    cmd = 'rooms_auto_distribute_tasks'
     print cmd
     print request.REQUEST
     
@@ -966,7 +966,7 @@ def auto_distribute_tasks(request, platform):
     
     if(start_now == True):
         # start process
-        p = Process(target=do_auto_distribute_tasks, args=(platform, record))
+        p = Process(target=rooms_do_auto_distribute_tasks, args=(platform, record))
         p.start()    
     
     return_datas = {'success':True, 'data':output, "dispatch_time":dispatch_time}   
@@ -977,8 +977,8 @@ def auto_distribute_tasks(request, platform):
     return response   
 
 
-def auto_delete_tasks(request, platform):
-    cmd = 'auto_delete_tasks'
+def rooms_auto_delete_tasks(request, platform):
+    cmd = 'rooms_auto_delete_tasks'
     print cmd
     print request.REQUEST
     
@@ -1024,7 +1024,7 @@ def auto_delete_tasks(request, platform):
     
     if(start_now == True):
         # start process
-        p = Process(target=do_auto_delete_tasks, args=(platform, record))
+        p = Process(target=rooms_do_auto_delete_tasks, args=(platform, record))
         p.start()    
     
     return_datas = {'success':True, 'data':output, "dispatch_time":dispatch_time}   

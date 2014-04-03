@@ -558,7 +558,7 @@ def ms_do_add_hot_tasks(platform, record):
     
     print 'total_dispatch_num count: %d' % (total_dispatch_num)
     
-    file_name = 'ms_hot_tasks_%s_%d_%d.log' % (record.name, suggest_task_number, num_dispatching)
+    file_name = '%s_%s_%s_%d_%d.log' % (platform, record.type, record.name, suggest_task_number, num_dispatching)
     log_file = open(file_name, 'w')
     
     ms_all.set_log(log_file)
@@ -681,7 +681,7 @@ def ms_do_delete_cold_tasks(platform, record):
         record.save()
         return True
     
-    file_name = 'ms_cold_tasks_%s_%d_%d.log' % (record.name, suggest_task_number, num_deleting)
+    file_name = '%s_%s_%s_%d_%d.log' % (platform, record.type, record.name, suggest_task_number, num_deleting)
     log_file = open(file_name, 'w') 
     
     ms_all.set_log(log_file)   

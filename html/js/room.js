@@ -704,7 +704,7 @@ var roomJS = function(){
     this.addHotTasksEnd = function() {
         Ext.getCmp("add_hot_tasks_form").form.submit({
             waitMsg : '正在修改......',
-            url : '/add_hot_tasks/' + self.plat + '/',
+            url : '/room_add_hot_tasks/' + self.plat + '/',
             method : 'post',
             timeout : 5000,//5秒超时, 
             params : '',
@@ -831,7 +831,7 @@ var roomJS = function(){
     this.deleteColdTasksEnd = function() {
         Ext.getCmp('delete_cold_tasks_form').form.submit({
             waitMsg : '正在修改......',
-            url : '/delete_cold_tasks/' + self.plat + '/',
+            url : '/room_delete_cold_tasks/' + self.plat + '/',
             method : 'post',
             timeout : 5000,//5秒超时, 
             params : '',

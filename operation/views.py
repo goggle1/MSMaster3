@@ -201,11 +201,11 @@ def do_operation(platform, operation):
         elif(operation.type == 'sync_room_status'):
             result = room.views.do_sync_room_status(platform, operation)
         elif(operation.type == 'stat_virtual_room'):
-            result = virtual_room.views.do_stat_virtual_room(platform, operation)
-        elif(operation.type == 'delete_cold_tasks'):
-            result = room.views.do_delete_cold_tasks(platform, operation)  
-        elif(operation.type == 'add_hot_tasks'):
-            result = room.views.do_add_hot_tasks(platform, operation)
+            result = virtual_room.views.do_stat_virtual_room(platform, operation)        
+        elif(operation.type == 'room_add_hot_tasks'):
+            result = room.views.room_do_add_hot_tasks(platform, operation)
+        elif(operation.type == 'room_delete_cold_tasks'):
+            result = room.views.room_do_delete_cold_tasks(platform, operation)  
         elif(operation.type == 'virtual_room_add_tasks'):
             result = virtual_room.views.do_virtual_room_add_tasks(platform, operation)
         elif(operation.type == 'virtual_room_delete_tasks'):
@@ -216,10 +216,10 @@ def do_operation(platform, operation):
             result = virtual_room.views.do_virtual_room_simulate_delete(platform, operation)
         elif(operation.type == 'virtual_room_percent_topN'):
             result = virtual_room.views.do_virtual_room_percent_topN(platform, operation)
-        elif(operation.type == 'auto_distribute_tasks'):
-            result = room.views.do_auto_distribute_tasks(platform, operation)
-        elif(operation.type == 'auto_delete_tasks'):
-            result = room.views.do_auto_delete_tasks(platform, operation)
+        elif(operation.type == 'rooms_auto_distribute_tasks'):
+            result = room.views.rooms_do_auto_distribute_tasks(platform, operation)
+        elif(operation.type == 'rooms_auto_delete_tasks'):
+            result = room.views.rooms_do_auto_delete_tasks(platform, operation)
         elif(operation.type == 'ms_delete_cold_tasks'):
             result = MS.views.ms_do_delete_cold_tasks(platform, operation)
         elif(operation.type == 'ms_add_hot_tasks'):
@@ -274,15 +274,15 @@ def operation_type_int(v_type):
                     'calc_hot_mean_hits_num':8,     \
                     'calc_temperature':9,           \
                     'stat_virtual_room':10,         \
-                    'delete_cold_tasks':11,         \
-                    'add_hot_tasks':12,             \
-                    'auto_distribute_tasks':13,     \
-                    'auto_delete_tasks':14,         \
+                    'room_delete_cold_tasks':11,    \
+                    'room_add_hot_tasks':12,        \
+                    'rooms_auto_distribute_tasks':13,     \
+                    'rooms_auto_delete_tasks':14,         \
                     'virtual_room_add_tasks':15,    \
                     'virtual_room_delete_tasks':16, \
-                    'virtual_room_simulate_add':17,     \
+                    'virtual_room_percent_topN':17,     \
                     'virtual_room_simulate_delete':18,  \
-                    'virtual_room_percent_topN':19,     \
+                    'virtual_room_simulate_add':19,     \
                     'evaluate_temperature':20           \
                 }
     if(type_dict.has_key(v_type) == True):
