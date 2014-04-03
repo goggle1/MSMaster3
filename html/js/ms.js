@@ -7,10 +7,12 @@ var msJS = function(){
     var server_grid = new Object();     //定义全局grid，方便其他方法中的调用
     var server_store = new Object();        //定义全局store，方便其他方法中的调用
     var plat = '';
+    var plat_ = '';
     
     this.ext_ms = function(tab_id, tab_title, param){
         var main_panel = Ext.getCmp("main_panel");
         self.plat = param;
+        self.plat_ = self.plat + '_'
         
         self.server_store = new Ext.data.JsonStore({
             url: '/get_ms_list/' + self.plat + '/',         
@@ -130,22 +132,22 @@ var msJS = function(){
                 forceFit:true, sortAscText:'升序',sortDescText:'降序',columnsText:'可选列'
             },
             tbar: [{
-                id: 'sync_ms_db',
+                //id: 'sync_ms_db',
                 text: '同步数据库',
                 iconCls: 'sync',
                 handler: self.sync_ms_db
             },'-',{
-                id: 'sync_ms_status',
+                //id: 'sync_ms_status',
                 text: '同步MS状态',             
                 iconCls: 'sync',
                 handler: self.sync_ms_status
             },'-',{
-                id: 'refresh_ms_list',
+                //id: 'refresh_ms_list',
                 text: '刷新MS列表',             
                 iconCls: 'refresh',
                 handler: self.refresh_ms_list
             },'-',{
-                id: 'show_ms_detail',
+                //id: 'show_ms_detail',
                 text: 'MS详细状态',             
                 iconCls: 'detail',
                 handler: self.show_ms_detail
@@ -235,36 +237,36 @@ var msJS = function(){
             var oneTbar = new Ext.Toolbar({
                 items:['server_id: ',{
                         xtype:'textfield',
-                        id:'server_id',
+                        id: self.plat_+'server_id',
                         name:'server_id',
                         width:110
                     },"-",'server_name: ',{
                         xtype:'textfield',
-                        id:'server_name',
+                        id: self.plat_+'server_name',
                         name:'server_name',
                         width:110
                     },"-",
                     'server_ip: ',{
                         xtype:'textfield',
-                        id:'server_ip',
+                        id: self.plat_+'server_ip',
                         name:'server_ip',
                         width:110
                     },"-",
                     'control_ip: ',{
                         xtype:'textfield',
-                        id:'control_ip',
+                        id: self.plat_+'control_ip',
                         name:'control_ip',
                         width:110
                     },"-",
                     'room_id: ',{
                         xtype:'textfield',
-                        id:'room_id',
+                        id: self.plat_+'room_id',
                         name:'room_id',
                         width:110
                     },"-",
                     'room_name: ',{
                         xtype:'textfield',
-                        id:'room_name',
+                        id: self.plat_+'room_name',
                         name:'room_name',
                         width:110
                     },"-",{
@@ -286,12 +288,12 @@ var msJS = function(){
                 Ext.apply(obj.baseParams,{
                         'start':0,
                         'limit':server_page.pageSize,
-                        'server_id':Ext.getCmp('server_id').getValue(),
-                        'server_name':Ext.getCmp('server_name').getValue(),
-                        'server_ip':Ext.getCmp('server_ip').getValue(),
-                        'control_ip':Ext.getCmp('control_ip').getValue(),
-                        'room_id':Ext.getCmp('room_id').getValue(),
-                        'room_name':Ext.getCmp('room_name').getValue()
+                        'server_id':Ext.getCmp(self.plat_+'server_id').getValue(),
+                        'server_name':Ext.getCmp(self.plat_+'server_name').getValue(),
+                        'server_ip':Ext.getCmp(self.plat_+'server_ip').getValue(),
+                        'control_ip':Ext.getCmp(self.plat_+'control_ip').getValue(),
+                        'room_id':Ext.getCmp(self.plat_+'room_id').getValue(),
+                        'room_name':Ext.getCmp(self.plat_+'room_name').getValue()
                         });
             });         
             self.server_store.load();
@@ -299,12 +301,12 @@ var msJS = function(){
         
         function reset_query_ms(){
             //将查询条件置为空，不可以将查询条件的充值放到beforeload里 
-            Ext.getCmp('server_id').setValue("");       
-            Ext.getCmp('server_name').setValue("");
-            Ext.getCmp('server_ip').setValue("");
-            Ext.getCmp('control_ip').setValue("");
-            Ext.getCmp('room_id').setValue("");
-            Ext.getCmp('room_name').setValue("");
+            Ext.getCmp(self.plat_+'server_id').setValue("");       
+            Ext.getCmp(self.plat_+'server_name').setValue("");
+            Ext.getCmp(self.plat_+'server_ip').setValue("");
+            Ext.getCmp(self.plat_+'control_ip').setValue("");
+            Ext.getCmp(self.plat_+'room_id').setValue("");
+            Ext.getCmp(self.plat_+'room_name').setValue("");
             query_ms();
         };
 
@@ -393,7 +395,7 @@ var msJS = function(){
         }
         
         var sync_ms_db_form = new Ext.FormPanel({
-            id: 'sync_ms_db_form',
+            id: self.plat_+'sync_ms_db_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -438,7 +440,7 @@ var msJS = function(){
     }
     
     this.syncMsDbEnd = function() {
-        Ext.getCmp("sync_ms_db_form").form.submit({
+        Ext.getCmp(self.plat_+"sync_ms_db_form").form.submit({
             waitMsg : '正在修改......',
             url : '/sync_ms_db/' + self.plat + '/',
             method : 'post',
@@ -506,7 +508,7 @@ var msJS = function(){
         }
         
         var sync_ms_status_form = new Ext.FormPanel({
-            id: 'sync_ms_status_form',
+            id: self.plat_+'sync_ms_status_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -553,7 +555,7 @@ var msJS = function(){
     }
     
     this.syncMsStatusEnd = function() {
-        Ext.getCmp("sync_ms_status_form").form.submit({
+        Ext.getCmp(self.plat_+"sync_ms_status_form").form.submit({
             waitMsg : '正在修改......',
             url : '/sync_ms_status/' + self.plat + '/',
             method : 'post',
@@ -702,7 +704,7 @@ var msJS = function(){
         }
         
         var add_hot_tasks_form = new Ext.FormPanel({
-            id: 'add_hot_tasks_form',
+            id: self.plat_+'add_hot_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -777,7 +779,7 @@ var msJS = function(){
     };
     
     this.addHotTasksEnd = function() {
-        Ext.getCmp("add_hot_tasks_form").form.submit({
+        Ext.getCmp(self.plat_+"add_hot_tasks_form").form.submit({
             waitMsg : '正在修改......',
             url : '/ms_add_hot_tasks/' + self.plat + '/',
             method : 'post',
@@ -870,7 +872,7 @@ var msJS = function(){
         }
         
         var delete_cold_tasks_form = new Ext.FormPanel({
-            id: 'delete_cold_tasks_form',
+            id: self.plat_+'delete_cold_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -945,7 +947,7 @@ var msJS = function(){
     };
     
     this.deleteColdTasksEnd = function() {
-        Ext.getCmp("delete_cold_tasks_form").form.submit({
+        Ext.getCmp(self.plat_+"delete_cold_tasks_form").form.submit({
             waitMsg : '正在修改......',
             url : '/ms_delete_cold_tasks/' + self.plat + '/',
             method : 'post',

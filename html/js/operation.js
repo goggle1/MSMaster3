@@ -7,10 +7,12 @@ var operationJS = function(){
     var operation_grid = new Object();      //定义全局grid，方便其他方法中的调用
     var operation_store = new Object();     //定义全局store，方便其他方法中的调用
     var plat = '';
+    var plat_ = '';
             
     this.ext_operation = function(tab_id, tab_title, param){
         var main_panel = Ext.getCmp("main_panel");
         self.plat = param;
+        self.plat_ = self.plat + '_';
                     
         self.operation_store = new Ext.data.JsonStore({
             url: '/get_operation_list/' + self.plat + '/',          
@@ -92,27 +94,27 @@ var operationJS = function(){
                 forceFit:true, sortAscText:'升序',sortDescText:'降序',columnsText:'可选列'
             },
             tbar: [{
-                id: 'refresh_operation_list',
+                //id: 'refresh_operation_list',
                 text: '刷新操作列表',             
                 iconCls: 'refresh',
                 handler: self.refresh_operation_list
             },'-',{
-            	id: 'delete_wrong_operation',
+            	//id: 'delete_wrong_operation',
                 text: '删除错误操作',
                 iconCls: 'del',
                 handler: self.delete_wrong_operation
             },'-',{
-                id: 'do_selected_operations',
+                //id: 'do_selected_operations',
                 text: '执行选中操作',             
                 iconCls: 'confirm',
                 handler: self.do_selected_operations
             },'-',{
-                id: 'do_all_operations',
+                //id: 'do_all_operations',
                 text: '执行全部操作',             
                 iconCls: 'check',
                 handler: self.do_all_operations
             },'-',{
-                id: 'show_operation_detail',
+                //id: 'show_operation_detail',
                 text: '操作详细信息',             
                 iconCls: 'detail',
                 handler: self.show_operation_detail
@@ -152,34 +154,32 @@ var operationJS = function(){
             var oneTbar = new Ext.Toolbar({
                 items:['type: ',{
                         xtype:'textfield',
-                        id:'type',
+                        id: self.plat_+'type',
                         name:'type',
                         width:110
                     },"-",
                     'name: ',{
                         xtype:'textfield',
-                        id:'name',
+                        id: self.plat_+'name',
                         name:'name',
                         width:110
                     },"-",
                     'user: ',{
                         xtype:'textfield',
-                        id:'user',
+                        id: self.plat_+'user',
                         name:'user',
                         width:110
                     },"-",
                     'status: ',{
                         xtype:'textfield',
-                        id:'status',
+                        id: self.plat_+'status',
                         name:'status',
                         width:110
-                    },"-",{
-                    	id:'search',
+                    },"-",{                    	
                         text:'搜索',
                         iconCls: 'search',
                         handler: query_operation
-                    },"-",{
-                    	id:'reset',
+                    },"-",{                    	
                         text:'重置',
                         iconCls: 'reset',
                         handler: reset_query_operation
@@ -194,10 +194,10 @@ var operationJS = function(){
                 Ext.apply(obj.baseParams,{
                         'start':0,
                         'limit':operation_page.pageSize,
-                        'type':Ext.getCmp('type').getValue(),
-                        'name':Ext.getCmp('name').getValue(),
-                        'user':Ext.getCmp('user').getValue(),
-                        'status':Ext.getCmp('status').getValue()
+                        'type':Ext.getCmp(self.plat_+'type').getValue(),
+                        'name':Ext.getCmp(self.plat_+'name').getValue(),
+                        'user':Ext.getCmp(self.plat_+'user').getValue(),
+                        'status':Ext.getCmp(self.plat_+'status').getValue()
                         });
             });         
             self.operation_store.load();
@@ -205,10 +205,10 @@ var operationJS = function(){
         
         function reset_query_operation(){
             //将查询条件置为空，不可以将查询条件的充值放到beforeload里         
-            Ext.getCmp('type').setValue("");
-            Ext.getCmp('name').setValue("");
-            Ext.getCmp('user').setValue("");
-            Ext.getCmp('status').setValue("");
+            Ext.getCmp(self.plat_+'type').setValue("");
+            Ext.getCmp(self.plat_+'name').setValue("");
+            Ext.getCmp(self.plat_+'user').setValue("");
+            Ext.getCmp(self.plat_+'status').setValue("");
             query_operation();
         };
 
@@ -307,7 +307,7 @@ var operationJS = function(){
         }
                 
         var delete_wrong_operation_form = new Ext.FormPanel({
-            id: 'delete_wrong_operation_form',
+            id: self.plat_+'delete_wrong_operation_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -346,7 +346,7 @@ var operationJS = function(){
     }
     
     this.deleteWrongOperationEnd = function() {
-        Ext.getCmp("delete_wrong_operation_form").form.submit({
+        Ext.getCmp(self.plat_+"delete_wrong_operation_form").form.submit({
             waitMsg : '正在修改......',
             url : '/delete_wrong_operation/' + self.plat + '/',
             method : 'post',

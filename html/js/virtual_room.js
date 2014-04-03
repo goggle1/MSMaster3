@@ -10,11 +10,12 @@ var virtual_roomJS = function(){
     var room_grid = new Object();       //定义全局grid，方便其他方法中的调用
     var room_store = new Object();      //定义全局store，方便其他方法中的调用
     var plat = '';
-        
+    var plat_ = '';    
     
     this.ext_virtual_room = function(tab_id, tab_title, param){
         var main_panel = Ext.getCmp("main_panel");
         self.plat = param;
+        self.plat_ = self.plat + '_';
         
         self.room_store = new Ext.data.JsonStore({
             url : '/get_virtual_room_list/' + self.plat + '/',
@@ -199,15 +200,15 @@ var virtual_roomJS = function(){
         function createTbar(){
             var listener = {specialkey:function(field, e){if(e.getKey()==Ext.EventObject.ENTER){query_room();}}};
             var oneTbar = new Ext.Toolbar({
-                items:['room_id: ',{
+                items:['virtual_room_id: ',{
                         xtype:'textfield',
-                        id:'room_id',
-                        name:'room_id',
+                        id: self.plat_+'virtual_room_id',
+                        name:'virtual_room_id',
                         width:110
-                    },"-",'room_name: ',{
+                    },"-",'virtual_room_name: ',{
                         xtype:'textfield',
-                        id:'room_name',
-                        name:'room_name',
+                        id: self.plat_+'virtual_room_name',
+                        name:'virtual_room_name',
                         width:110
                     },"-",{
                         text:'搜索',
@@ -228,8 +229,8 @@ var virtual_roomJS = function(){
                 Ext.apply(obj.baseParams,{
                         'start':0,
                         'limit':room_page.pageSize,
-                        'room_id':Ext.getCmp('room_id').getValue(),
-                        'room_name':Ext.getCmp('room_name').getValue()
+                        'virtual_room_id':Ext.getCmp(self.plat_+'virtual_room_id').getValue(),
+                        'virtual_room_name':Ext.getCmp(self.plat_+'virtual_room_name').getValue()
                         });
             });         
             self.room_store.load();
@@ -237,8 +238,8 @@ var virtual_roomJS = function(){
         
         function reset_query_room(){
             //将查询条件置为空，不可以将查询条件的充值放到beforeload里
-            Ext.getCmp('room_id').setValue("");
-            Ext.getCmp('room_name').setValue("");
+            Ext.getCmp(self.plat_+'virtual_room_id').setValue("");
+            Ext.getCmp(self.plat_+'virtual_room_name').setValue("");
             query_room();
         };
         
@@ -329,8 +330,8 @@ var virtual_roomJS = function(){
             return true;
         }
         
-        topN = 100000;      
-        virtual_room_id = 0;
+        var topN = 100000;      
+        var virtual_room_id = 0;
         
         /*
         Ext.Ajax.request({
@@ -360,7 +361,7 @@ var virtual_roomJS = function(){
         virtual_room_id += 1
                 
         var add_virtual_room_form = new Ext.FormPanel({
-            id: 'add_virtual_room_form',
+            id: self.plat_+'add_virtual_room_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -431,7 +432,7 @@ var virtual_roomJS = function(){
     }
     
     this.addVirtualRoomEnd = function() {
-        Ext.getCmp("add_virtual_room_form").form.submit({
+        Ext.getCmp(self.plat_+"add_virtual_room_form").form.submit({
             waitMsg : '正在修改......',
             url : '/add_virtual_room/' + self.plat + '/',
             method : 'post',
@@ -480,7 +481,7 @@ var virtual_roomJS = function(){
         }
                 
         var modify_virtual_room_form = new Ext.FormPanel({
-            id: 'modify_virtual_room_form',
+            id: self.plat_+'modify_virtual_room_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -551,7 +552,7 @@ var virtual_roomJS = function(){
     }
     
     this.modifyVirtualRoomEnd = function() {
-        Ext.getCmp("modify_virtual_room_form").form.submit({
+        Ext.getCmp(self.plat_+"modify_virtual_room_form").form.submit({
             waitMsg : '正在修改......',
             url : '/modify_virtual_room/' + self.plat + '/',
             method : 'post',
@@ -601,7 +602,7 @@ var virtual_roomJS = function(){
         }
                 
         var delete_virtual_room_form = new Ext.FormPanel({
-            id: 'delete_virtual_room_form',
+            id: self.plat_+'delete_virtual_room_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -672,7 +673,7 @@ var virtual_roomJS = function(){
     }
     
     this.deleteVirtualRoomEnd = function() {
-        Ext.getCmp("delete_virtual_room_form").form.submit({
+        Ext.getCmp(self.plat_+"delete_virtual_room_form").form.submit({
             waitMsg : '正在修改......',
             url : '/delete_virtual_room/' + self.plat + '/',
             method : 'post',
@@ -709,7 +710,7 @@ var virtual_roomJS = function(){
         }
         
         var stat_virtual_room_form = new Ext.FormPanel({
-            id: 'stat_virtual_room_form',
+            id: self.plat_+'stat_virtual_room_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -754,7 +755,7 @@ var virtual_roomJS = function(){
     }
     
     this.statVirtualRoomEnd = function() {
-        Ext.getCmp("stat_virtual_room_form").form.submit({
+        Ext.getCmp(self.plat_+"stat_virtual_room_form").form.submit({
             waitMsg : '正在修改......',
             url : '/stat_virtual_room/' + self.plat + '/',
             method : 'post',
@@ -791,7 +792,7 @@ var virtual_roomJS = function(){
         }
         
         var virtual_room_simulate_add_form = new Ext.FormPanel({
-            id: 'virtual_room_simulate_add_form',
+            id: self.plat_+'virtual_room_simulate_add_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -836,7 +837,7 @@ var virtual_roomJS = function(){
     }
     
     this.virtualRoomSimulateAddEnd = function() {
-        Ext.getCmp("virtual_room_simulate_add_form").form.submit({
+        Ext.getCmp(self.plat_+"virtual_room_simulate_add_form").form.submit({
             waitMsg : '正在修改......',
             url : '/virtual_room_simulate_add/' + self.plat + '/',
             method : 'post',
@@ -873,7 +874,7 @@ var virtual_roomJS = function(){
         }
         
         var virtual_room_simulate_delete_form = new Ext.FormPanel({
-            id: 'virtual_room_simulate_delete_form',
+            id: self.plat_+'virtual_room_simulate_delete_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -918,7 +919,7 @@ var virtual_roomJS = function(){
     }
     
     this.virtualRoomSimulateDeleteEnd = function() {
-        Ext.getCmp("virtual_room_simulate_delete_form").form.submit({
+        Ext.getCmp(self.plat_+"virtual_room_simulate_delete_form").form.submit({
             waitMsg : '正在修改......',
             url : '/virtual_room_simulate_delete/' + self.plat + '/',
             method : 'post',
@@ -955,7 +956,7 @@ var virtual_roomJS = function(){
         }
         
         var virtual_room_percent_topN_form = new Ext.FormPanel({
-            id: 'virtual_room_percent_topN_form',
+            id: self.plat_+'virtual_room_percent_topN_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -1000,7 +1001,7 @@ var virtual_roomJS = function(){
     }
     
     this.virtualRoomPercentTopNEnd = function() {
-        Ext.getCmp("virtual_room_percent_topN_form").form.submit({
+        Ext.getCmp(self.plat_+"virtual_room_percent_topN_form").form.submit({
             waitMsg : '正在修改......',
             url : '/virtual_room_percent_topN/' + self.plat + '/',
             method : 'post',
@@ -1103,7 +1104,7 @@ var virtual_roomJS = function(){
         }
         
         var virtual_room_add_tasks_form = new Ext.FormPanel({
-            id: 'virtual_room_add_tasks_form',
+            id: self.plat_+'virtual_room_add_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -1154,7 +1155,7 @@ var virtual_roomJS = function(){
     };
     
     this.virtualRoomAddTasksEnd = function() {
-        Ext.getCmp("virtual_room_add_tasks_form").form.submit({
+        Ext.getCmp(self.plat_+"virtual_room_add_tasks_form").form.submit({
             waitMsg : '正在修改......',
             url : '/virtual_room_add_tasks/' + self.plat + '/',
             method : 'post',
@@ -1200,7 +1201,7 @@ var virtual_roomJS = function(){
         }
         
         var virtual_room_delete_tasks_form = new Ext.FormPanel({
-            id: 'virtual_room_delete_tasks_form',
+            id: self.plat_+'virtual_room_delete_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -1251,7 +1252,7 @@ var virtual_roomJS = function(){
     };
     
     this.virtualRoomDeleteTasksEnd = function() {
-        Ext.getCmp('virtual_room_delete_tasks_form').form.submit({
+        Ext.getCmp(self.plat_+'virtual_room_delete_tasks_form').form.submit({
             waitMsg : '正在修改......',
             url : '/virtual_room_delete_tasks/' + self.plat + '/',
             method : 'post',

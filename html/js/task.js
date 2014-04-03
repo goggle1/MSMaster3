@@ -75,10 +75,12 @@ var taskJS = function(){
 	var task_grid = new Object();		//定义全局grid，方便其他方法中的调用
 	var task_store = new Object();		//定义全局store，方便其他方法中的调用
 	var plat = '';
+	var plat_ = '';
 	
 	this.ext_task = function(tab_id, tab_title, param){
 		var main_panel = Ext.getCmp("main_panel");
 		self.plat = param;
+		self.plat_ = self.plat + '_';
 
 		self.task_store = new Ext.data.JsonStore({
 			url : '/get_task_list/' + self.plat + '/',
@@ -212,7 +214,7 @@ var taskJS = function(){
 			var oneTbar = new Ext.Toolbar({
 				items:['hash: ',{
 						xtype:'textfield',
-						id:'hash',
+						id: self.plat_+'hash',
 						name:'hash',
 						width:320
 					},"-",{
@@ -234,7 +236,7 @@ var taskJS = function(){
 				Ext.apply(obj.baseParams,{
 						'start':0,
 						'limit':task_page.pageSize,
-						'hash':Ext.getCmp('hash').getValue()
+						'hash':Ext.getCmp(self.plat_+'hash').getValue()
 						});
 			});			
 			self.task_store.load();
@@ -242,7 +244,7 @@ var taskJS = function(){
 		
 		function reset_query_task(){
 			//将查询条件置为空，不可以将查询条件的充值放到beforeload里			
-			Ext.getCmp('hash').setValue("");
+			Ext.getCmp(self.plat_+'hash').setValue("");
 			query_task();
 		};
 		
@@ -320,7 +322,7 @@ var taskJS = function(){
 		var yesterday = getDiffDate(-1, 2);
 		
 		var sync_hash_db_form = new Ext.FormPanel({
-			id: 'sync_hash_db_form',
+			id: self.plat_+'sync_hash_db_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -381,7 +383,7 @@ var taskJS = function(){
 	
 	
 	this.syncHashDbEnd = function() {
-		Ext.getCmp("sync_hash_db_form").form.submit({
+		Ext.getCmp(self.plat_+"sync_hash_db_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/sync_hash_db/' + self.plat + '/',
 			method : 'post',
@@ -417,7 +419,7 @@ var taskJS = function(){
 		}
 				
 		var sync_pay_medias_form = new Ext.FormPanel({
-			id: 'sync_pay_medias_form',
+			id: self.plat_+'sync_pay_medias_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -464,7 +466,7 @@ var taskJS = function(){
 	
 	
 	this.syncPayMediasEnd = function() {
-		Ext.getCmp("sync_pay_medias_form").form.submit({
+		Ext.getCmp(self.plat_+"sync_pay_medias_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/sync_pay_medias/' + self.plat + '/',
 			method : 'post',
@@ -529,7 +531,7 @@ var taskJS = function(){
 		var yesterday = getDiffDate(-1, 2);
 		
 		var upload_hits_num_form = new Ext.FormPanel({
-			id: 'upload_hits_num_form',
+			id: self.plat_+'upload_hits_num_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -590,7 +592,7 @@ var taskJS = function(){
 	
 	
 	this.uploadHitsNumEnd = function() {
-		Ext.getCmp("upload_hits_num_form").form.submit({
+		Ext.getCmp(self.plat_+"upload_hits_num_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/upload_hits_num/' + self.plat + '/',
 			method : 'post',
@@ -628,7 +630,7 @@ var taskJS = function(){
 		var yesterday = getDiffDate(-1, 2);
 		
 		var calc_hot_mean_hits_num_form = new Ext.FormPanel({
-			id: 'calc_hot_mean_hits_num_form',
+			id: self.plat_+'calc_hot_mean_hits_num_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -681,7 +683,7 @@ var taskJS = function(){
 	};
 	
 	this.calcHotMeanHitsNumEnd = function() {
-		Ext.getCmp("calc_hot_mean_hits_num_form").form.submit({
+		Ext.getCmp(self.plat_+"calc_hot_mean_hits_num_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/calc_hot_mean_hits_num/' + self.plat + '/',
 			method : 'post',
@@ -732,7 +734,7 @@ var taskJS = function(){
 				param_mean_hits = json_obj.mean_hits;
 				//alert(param_alpha);
 				var set_parameters_form = new Ext.FormPanel({
-					id: 'set_parameters_form_' + self.plat,
+					id: self.plat_+'set_parameters_form',
 					autoWidth: true,//自动调整宽度
 					url:'',
 					frame:true,
@@ -793,7 +795,7 @@ var taskJS = function(){
 	
 	
 	this.setParametersEnd = function() {
-		Ext.getCmp("set_parameters_form_" + self.plat).form.submit({
+		Ext.getCmp(self.plat_+"set_parameters_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/set_parameters/' + self.plat + '/',
 			method : 'post',
@@ -831,7 +833,7 @@ var taskJS = function(){
 		var today = getDiffDate(0, 2);
 		
 		var calc_temperature_form = new Ext.FormPanel({
-			id: 'calc_temperature_form_' + self.plat,
+			id: self.plat_+'calc_temperature_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -884,7 +886,7 @@ var taskJS = function(){
 	};
 		
 	this.calcTemperatureEnd = function() {
-		Ext.getCmp("calc_temperature_form_"+self.plat).form.submit({
+		Ext.getCmp(self.plat_+"calc_temperature_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/calc_temperature/' + self.plat + '/',
 			method : 'post',
@@ -922,7 +924,7 @@ var taskJS = function(){
 		var today = getDiffDate(0, 2);
 		
 		var evaluate_temperature_form = new Ext.FormPanel({
-			id: 'evaluate_temperature_form',
+			id: self.plat_+'evaluate_temperature_form',
 			autoWidth: true,//自动调整宽度
 			url:'',
 			frame:true,
@@ -975,7 +977,7 @@ var taskJS = function(){
 	};
 	
 	this.evaluateTemperatureEnd = function() {
-		Ext.getCmp("evaluate_temperature_form").form.submit({
+		Ext.getCmp(self.plat_+"evaluate_temperature_form").form.submit({
 			waitMsg : '正在修改......',
 			url : '/evaluate_temperature/' + self.plat + '/',
 			method : 'post',

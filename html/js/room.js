@@ -11,12 +11,13 @@ var roomJS = function(){
     var room_store = new Object();      //定义全局store，方便其他方法中的调用
     var virtual_room_store = new Object();            
     var plat = '';
-    
+    var plat_ = ''
     
     
     this.ext_room = function(tab_id, tab_title, param){
         var main_panel = Ext.getCmp("main_panel");
         self.plat = param;
+        self.plat_ = self.plat + '_';
         
         self.virtual_room_store = new Ext.data.JsonStore({
             url : '/get_virtual_room_list/' + self.plat + '/',
@@ -217,12 +218,12 @@ var roomJS = function(){
             var oneTbar = new Ext.Toolbar({
                 items:['room_id: ',{
                         xtype:'textfield',
-                        id:'room_id',
+                        id: self.plat_+'room_id',
                         name:'room_id',
                         width:110
                     },"-",'room_name: ',{
                         xtype:'textfield',
-                        id:'room_name',
+                        id: self.plat_+'room_name',
                         name:'room_name',
                         width:110
                     },"-",{
@@ -244,8 +245,8 @@ var roomJS = function(){
                 Ext.apply(obj.baseParams,{
                         'start':0,
                         'limit':room_page.pageSize,
-                        'room_id':Ext.getCmp('room_id').getValue(),
-                        'room_name':Ext.getCmp('room_name').getValue()
+                        'room_id':Ext.getCmp(self.plat_+'room_id').getValue(),
+                        'room_name':Ext.getCmp(self.plat_+'room_name').getValue()
                         });
             });         
             self.room_store.load();
@@ -253,8 +254,8 @@ var roomJS = function(){
         
         function reset_query_room(){
             //将查询条件置为空，不可以将查询条件的充值放到beforeload里
-            Ext.getCmp('room_id').setValue("");
-            Ext.getCmp('room_name').setValue("");
+            Ext.getCmp(self.plat_+'room_id').setValue("");
+            Ext.getCmp(self.plat_+'room_name').setValue("");
             query_room();
         };
         
@@ -337,7 +338,7 @@ var roomJS = function(){
         }
         
         var sync_room_db_form = new Ext.FormPanel({
-            id: 'sync_room_db_form',
+            id: self.plat_+'sync_room_db_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -382,7 +383,7 @@ var roomJS = function(){
     }
     
     this.syncRoomDbEnd = function() {
-        Ext.getCmp("sync_room_db_form").form.submit({
+        Ext.getCmp(self.plat_+"sync_room_db_form").form.submit({
             waitMsg : '正在修改......',
             url : '/sync_room_db/' + self.plat + '/',
             method : 'post',
@@ -474,7 +475,7 @@ var roomJS = function(){
         }
         
         var sync_room_status_form = new Ext.FormPanel({
-            id: 'sync_room_status_form',
+            id: self.plat_+'sync_room_status_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -519,7 +520,7 @@ var roomJS = function(){
     }
     
     this.syncRoomStatusEnd = function() {
-        Ext.getCmp("sync_room_status_form").form.submit({
+        Ext.getCmp(self.plat_+"sync_room_status_form").form.submit({
             waitMsg : '正在修改......',
             url : '/sync_room_status/' + self.plat + '/',
             method : 'post',
@@ -628,7 +629,7 @@ var roomJS = function(){
         }
         
         var add_hot_tasks_form = new Ext.FormPanel({
-            id: 'add_hot_tasks_form',
+            id: self.plat_+'add_hot_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -702,7 +703,7 @@ var roomJS = function(){
     };
     
     this.addHotTasksEnd = function() {
-        Ext.getCmp("add_hot_tasks_form").form.submit({
+        Ext.getCmp(self.plat_+"add_hot_tasks_form").form.submit({
             waitMsg : '正在修改......',
             url : '/room_add_hot_tasks/' + self.plat + '/',
             method : 'post',
@@ -755,7 +756,7 @@ var roomJS = function(){
         }
         
         var delete_cold_tasks_form = new Ext.FormPanel({
-            id: 'delete_cold_tasks_form',
+            id: self.plat_+'delete_cold_tasks_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -829,7 +830,7 @@ var roomJS = function(){
     };
     
     this.deleteColdTasksEnd = function() {
-        Ext.getCmp('delete_cold_tasks_form').form.submit({
+        Ext.getCmp(self.plat_+'delete_cold_tasks_form').form.submit({
             waitMsg : '正在修改......',
             url : '/room_delete_cold_tasks/' + self.plat + '/',
             method : 'post',
@@ -879,7 +880,7 @@ var roomJS = function(){
         }
         
         var room_in_virtual_room_form = new Ext.FormPanel({
-            id: 'room_in_virtual_room_form',
+            id: self.plat_+'room_in_virtual_room_form',
             autoWidth: true,//自动调整宽度
             url:'',
             frame:true,
@@ -946,7 +947,7 @@ var roomJS = function(){
     };
     
     this.roomInVirtualRoomEnd = function() {
-        Ext.getCmp('room_in_virtual_room_form').form.submit({
+        Ext.getCmp(self.plat_+'room_in_virtual_room_form').form.submit({
             waitMsg : '正在修改......',
             url : '/room_in_virtual_room/' + self.plat + '/',
             method : 'post',
