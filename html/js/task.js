@@ -104,7 +104,7 @@ var taskJS = function(){
 
 		var sel_mode = new Ext.grid.CheckboxSelectionModel();
 		var task_mode = new Ext.grid.ColumnModel([
-			new Ext.grid.RowNumberer(),
+			new Ext.grid.RowNumberer({ header: "序号", width: 40, align: 'center' }),
 			sel_mode,
 			{header : 'hash', id : 'hash', dataIndex : 'hash', sortable : true},
 			{header : 'online_time', id : 'online_time', dataIndex : 'online_time', sortable : true},

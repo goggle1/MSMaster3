@@ -10,6 +10,8 @@ import time
 def login(request):
     username = request.POST.get('username', '')
     password = request.POST.get('password', '')
+    if(len(username) == 0):
+        return render_to_response('login.html')
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_active:
         # Correct password, and the user is marked "active"
@@ -23,9 +25,16 @@ def login(request):
         return_datas['createTime'] = create_time                
         return HttpResponse(json.dumps(return_datas))        
     else:
-        # Show an error page
+        # Show an error page 
+        return_datas = {"success":False, "data":"登录失败"}
+        now_time = time.localtime(time.time())        
+        create_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
+        return_datas['createTime'] = create_time
+        return_datas['username'] = username
+        return_datas['password'] = password
+        return HttpResponse(json.dumps(return_datas))  
         #return HttpResponseRedirect("/account/invalid/")
-        return render_to_response('login.html')
+        #return render_to_response('login.html')
     
     
 def logout(request):

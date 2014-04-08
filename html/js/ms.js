@@ -59,7 +59,7 @@ var msJS = function(){
 
         var sel_mode = new Ext.grid.CheckboxSelectionModel();
         var server_mode = new Ext.grid.ColumnModel([
-            new Ext.grid.RowNumberer(),
+            new Ext.grid.RowNumberer({ header: "序号", width: 40, align: 'center' }),
             sel_mode,
             {header : 'server_id', id : 'server_id', dataIndex : 'server_id', sortable : true},
             {header : 'server_name', id : 'server_name', dataIndex : 'server_name', sortable : true},

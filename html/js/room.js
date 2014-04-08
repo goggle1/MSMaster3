@@ -76,7 +76,7 @@ var roomJS = function(){
     
         var sel_mode = new Ext.grid.CheckboxSelectionModel();
         var room_mode = new Ext.grid.ColumnModel([
-            new Ext.grid.RowNumberer(),
+            new Ext.grid.RowNumberer({ header: "序号", width: 40, align: 'center' }),
             sel_mode,
             {header : 'room_id', id : 'room_id', dataIndex : 'room_id', sortable : true},
             {header : 'room_name', id : 'room_name', dataIndex : 'room_name', sortable : true},

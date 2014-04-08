@@ -44,7 +44,7 @@ var operationJS = function(){
                     
         var sel_mode = new Ext.grid.CheckboxSelectionModel();
         var operation_mode = new Ext.grid.ColumnModel([
-            new Ext.grid.RowNumberer(),
+            new Ext.grid.RowNumberer({ header: "序号", width: 40, align: 'center' }),
             sel_mode,
             {header : 'id', id : 'id', dataIndex : 'id', sortable : true},
             {header : 'type', id : 'type', dataIndex : 'type', sortable : true},

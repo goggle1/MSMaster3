@@ -49,7 +49,7 @@ var virtual_roomJS = function(){
     
         var sel_mode = new Ext.grid.CheckboxSelectionModel();
         var room_mode = new Ext.grid.ColumnModel([
-            new Ext.grid.RowNumberer(),
+            new Ext.grid.RowNumberer({ header: "序号", width: 40, align: 'center' }),
             sel_mode,
             {header : 'virtual_room_id', id : 'virtual_room_id', dataIndex : 'virtual_room_id', sortable : true},
             {header : 'virtual_room_name', id : 'virtual_room_name', dataIndex : 'virtual_room_name', sortable : true},
