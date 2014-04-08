@@ -709,6 +709,15 @@ var virtual_roomJS = function(){
             return true;
         }
         
+        var grid = self.room_grid;
+        var t_sm = grid.getSelectionModel();
+        var virtual_room_ids = []
+        var recs = t_sm.getSelections();
+        for (var i = 0; i < recs.length; i++) 
+        {
+            virtual_room_ids.push(recs[i].get('virtual_room_id'));
+        }
+        
         var stat_virtual_room_form = new Ext.FormPanel({
             id: self.plat_+'stat_virtual_room_form',
             autoWidth: true,//自动调整宽度
@@ -718,7 +727,9 @@ var virtual_roomJS = function(){
             bodyStyle:'padding:5px 5px 0',
             labelWidth:150,
             defaults:{xtype:'textfield',width:200},
-            items: [                                    
+            items: [   
+            	{fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     hidden:true},
+                {fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     disabled:true},                                 
                 {
                     xtype:'checkbox',
                     id: 'start_now',
@@ -739,7 +750,7 @@ var virtual_roomJS = function(){
         });
         
         var win = new Ext.Window({
-            width:400,height:110,minWidth:200,minHeight:100,
+            width:400,height:135,minWidth:200,minHeight:100,
             autoScroll:'auto',
             title : "统计汇总，汇总虚拟机房内信息",
             id : "stat_virtual_room_win_" + self.plat,
@@ -791,6 +802,15 @@ var virtual_roomJS = function(){
             return true;
         }
         
+        var grid = self.room_grid;
+        var t_sm = grid.getSelectionModel();
+        var virtual_room_ids = []
+        var recs = t_sm.getSelections();
+        for (var i = 0; i < recs.length; i++) 
+        {
+            virtual_room_ids.push(recs[i].get('virtual_room_id'));
+        }
+        
         var virtual_room_simulate_add_form = new Ext.FormPanel({
             id: self.plat_+'virtual_room_simulate_add_form',
             autoWidth: true,//自动调整宽度
@@ -800,7 +820,9 @@ var virtual_roomJS = function(){
             bodyStyle:'padding:5px 5px 0',
             labelWidth:150,
             defaults:{xtype:'textfield',width:200},
-            items: [                                    
+            items: [ 
+            	{fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     hidden:true},
+                {fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     disabled:true},                                   
                 {
                     xtype:'checkbox',
                     id: 'start_now',
@@ -821,7 +843,7 @@ var virtual_roomJS = function(){
         });
         
         var win = new Ext.Window({
-            width:400,height:110,minWidth:200,minHeight:100,
+            width:400,height:135,minWidth:200,minHeight:100,
             autoScroll:'auto',
             title : "分发预算，只计算，并不分发",
             id : "virtual_room_simulate_add_win_" + self.plat,
@@ -873,6 +895,15 @@ var virtual_roomJS = function(){
             return true;
         }
         
+        var grid = self.room_grid;
+        var t_sm = grid.getSelectionModel();
+        var virtual_room_ids = []
+        var recs = t_sm.getSelections();
+        for (var i = 0; i < recs.length; i++) 
+        {
+            virtual_room_ids.push(recs[i].get('virtual_room_id'));
+        }
+        
         var virtual_room_simulate_delete_form = new Ext.FormPanel({
             id: self.plat_+'virtual_room_simulate_delete_form',
             autoWidth: true,//自动调整宽度
@@ -882,7 +913,9 @@ var virtual_roomJS = function(){
             bodyStyle:'padding:5px 5px 0',
             labelWidth:150,
             defaults:{xtype:'textfield',width:200},
-            items: [                                    
+            items: [ 
+            	{fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     hidden:true},
+                {fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     disabled:true},                                        
                 {
                     xtype:'checkbox',
                     id: 'start_now',
@@ -903,7 +936,7 @@ var virtual_roomJS = function(){
         });
         
         var win = new Ext.Window({
-            width:400,height:110,minWidth:200,minHeight:100,
+            width:400,height:135,minWidth:200,minHeight:100,
             autoScroll:'auto',
             title : "删除预算，只计算，并不删除",
             id : "virtual_room_simulate_delete_win_" + self.plat,
@@ -955,6 +988,15 @@ var virtual_roomJS = function(){
             return true;
         }
         
+        var grid = self.room_grid;
+        var t_sm = grid.getSelectionModel();
+        var virtual_room_ids = []
+        var recs = t_sm.getSelections();
+        for (var i = 0; i < recs.length; i++) 
+        {
+            virtual_room_ids.push(recs[i].get('virtual_room_id'));
+        }
+        
         var virtual_room_percent_topN_form = new Ext.FormPanel({
             id: self.plat_+'virtual_room_percent_topN_form',
             autoWidth: true,//自动调整宽度
@@ -964,7 +1006,9 @@ var virtual_roomJS = function(){
             bodyStyle:'padding:5px 5px 0',
             labelWidth:150,
             defaults:{xtype:'textfield',width:200},
-            items: [                                    
+            items: [ 
+            	{fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     hidden:true},
+                {fieldLabel:'ids',      name:'ids',     value: virtual_room_ids,     disabled:true},                                    
                 {
                     xtype:'checkbox',
                     id: 'start_now',
@@ -985,7 +1029,7 @@ var virtual_roomJS = function(){
         });
         
         var win = new Ext.Window({
-            width:400,height:110,minWidth:200,minHeight:100,
+            width:400,height:135,minWidth:200,minHeight:100,
             autoScroll:'auto',
             title : "最热占比计算，top5万，top10万，top20万",
             id : "virtual_room_percent_topN_win_" + self.plat,

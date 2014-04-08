@@ -61,7 +61,14 @@ def do_stat_virtual_room(platform, record):
     record.status = 1
     record.save()
     
-    virtual_rooms = django_get_virtual_room(platform)
+    virtual_rooms_all = django_get_virtual_room(platform)
+    virtual_rooms = virtual_rooms_all
+    
+    virtual_room_ids = record.name
+    if(len(virtual_room_ids) > 0):
+        where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
+        virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
+           
     for virtual_room in virtual_rooms:
         print 'virtual_room_id=%d, %s' % (virtual_room.virtual_room_id, virtual_room.virtual_room_name)
         room_list = django_get_rooms_in_virtual_room(platform, virtual_room.virtual_room_id)
@@ -286,7 +293,14 @@ def do_virtual_room_simulate_add(platform, record):
 
     (task_list, task_dict) = task.views.get_tasks_sql(platform)
     
-    virtual_rooms = django_get_virtual_room(platform)
+    virtual_rooms_all = django_get_virtual_room(platform)
+    virtual_rooms = virtual_rooms_all
+    
+    virtual_room_ids = record.name
+    if(len(virtual_room_ids) > 0):
+        where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
+        virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
+   
     for one_virtual_room in virtual_rooms:
         one_virtual_room_simulate_add(platform, one_virtual_room, task_list, task_dict)
         
@@ -501,7 +515,14 @@ def do_virtual_room_simulate_delete(platform, record):
     
     (task_list, task_dict) = task.views.get_tasks_sql(platform) 
     
-    virtual_rooms = django_get_virtual_room(platform)
+    virtual_rooms_all = django_get_virtual_room(platform)
+    virtual_rooms = virtual_rooms_all
+    
+    virtual_room_ids = record.name
+    if(len(virtual_room_ids) > 0):
+        where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
+        virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
+    
     for one_virtual_room in virtual_rooms:
         one_virtual_room_simulate_delete(platform, one_virtual_room, task_list, task_dict)
             
@@ -602,7 +623,14 @@ def do_virtual_room_percent_topN(platform, record):
     
     (task_list, task_dict) = task.views.get_tasks_sql(platform)    
     
-    virtual_rooms = django_get_virtual_room(platform)
+    virtual_rooms_all = django_get_virtual_room(platform)
+    virtual_rooms = virtual_rooms_all
+    
+    virtual_room_ids = record.name
+    if(len(virtual_room_ids) > 0):
+        where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
+        virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
+    
     for one_virtual_room in virtual_rooms:
         one_virtual_room_percent_topN(platform, one_virtual_room, task_list, task_dict)               
             
@@ -729,6 +757,11 @@ def stat_virtual_room(request, platform):
     print 'stat_virtual_room'
     print request.REQUEST    
     
+    virtual_room_ids = ''
+    if 'ids' in request.REQUEST:
+        virtual_room_ids = request.REQUEST['ids']
+    print virtual_room_ids
+        
     start_now = False
     if 'start_now' in request.REQUEST:
         if(request.REQUEST['start_now'] == 'on'):
@@ -741,7 +774,7 @@ def stat_virtual_room(request, platform):
      
     operation1 = {}
     operation1['type'] = 'stat_virtual_room'
-    operation1['name'] = today
+    operation1['name'] = virtual_room_ids
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
     operation1['memo'] = ''
@@ -966,8 +999,11 @@ def virtual_room_delete_tasks(request, platform):
 def virtual_room_simulate_add(request, platform):
     print 'virtual_room_simulate_add'
     print request.REQUEST    
-    
-    #virtual_room_id = request.REQUEST['virtual_room_id']
+        
+    virtual_room_ids = ''
+    if 'ids' in request.REQUEST:
+        virtual_room_ids = request.REQUEST['ids']
+    print virtual_room_ids
     
     start_now = False
     if 'start_now' in request.REQUEST:
@@ -979,14 +1015,14 @@ def virtual_room_simulate_add(request, platform):
      
     operation1 = {}
     operation1['type'] = 'virtual_room_simulate_add'
-    operation1['name'] = 'ALL'
+    operation1['name'] = virtual_room_ids
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
     operation1['memo'] = ''
             
     return_datas = {}
     output = ''
-    records = operation.views.get_operation_undone_by_type_name(platform, operation1['type'], operation1['name'])
+    records = operation.views.get_operation_undone_by_type(platform, operation1['type'])
     if(len(records) > 0):          
         for record in records:
             output += 'operation exist, id=%d, type=%s, name=%s, dispatch_time=%s, status=%d' % (record.id, record.type, record.name, record.dispatch_time, record.status)
@@ -1020,7 +1056,10 @@ def virtual_room_simulate_delete(request, platform):
     print 'virtual_room_simulate_delete'
     print request.REQUEST    
     
-    #virtual_room_id = request.REQUEST['virtual_room_id']
+    virtual_room_ids = ''
+    if 'ids' in request.REQUEST:
+        virtual_room_ids = request.REQUEST['ids']
+    print virtual_room_ids
     
     start_now = False
     if 'start_now' in request.REQUEST:
@@ -1032,14 +1071,14 @@ def virtual_room_simulate_delete(request, platform):
      
     operation1 = {}
     operation1['type'] = 'virtual_room_simulate_delete'
-    operation1['name'] = 'ALL'
+    operation1['name'] = virtual_room_ids
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
     operation1['memo'] = ''
             
     return_datas = {}
     output = ''
-    records = operation.views.get_operation_undone_by_type_name(platform, operation1['type'], operation1['name'])
+    records = operation.views.get_operation_undone_by_type(platform, operation1['type'])
     if(len(records) > 0):          
         for record in records:
             output += 'operation exist, id=%d, type=%s, name=%s, dispatch_time=%s, status=%d' % (record.id, record.type, record.name, record.dispatch_time, record.status)
@@ -1073,7 +1112,10 @@ def virtual_room_percent_topN(request, platform):
     print 'virtual_room_percent_topN'
     print request.REQUEST    
     
-    #virtual_room_id = request.REQUEST['virtual_room_id']
+    virtual_room_ids = ''
+    if 'ids' in request.REQUEST:
+        virtual_room_ids = request.REQUEST['ids']
+    print virtual_room_ids
     
     start_now = False
     if 'start_now' in request.REQUEST:
@@ -1092,7 +1134,7 @@ def virtual_room_percent_topN(request, platform):
             
     return_datas = {}
     output = ''
-    records = operation.views.get_operation_undone_by_type_name(platform, operation1['type'], operation1['name'])
+    records = operation.views.get_operation_undone_by_type(platform, operation1['type'])
     if(len(records) > 0):          
         for record in records:
             output += 'operation exist, id=%d, type=%s, name=%s, dispatch_time=%s, status=%d' % (record.id, record.type, record.name, record.dispatch_time, record.status)
