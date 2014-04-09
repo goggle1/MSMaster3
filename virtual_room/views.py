@@ -172,7 +172,7 @@ def do_virtual_room_add_tasks(platform, record):
     end_time = time.strftime("%Y-%m-%d %H:%M:%S", now_time)
     output = 'now: %s, ' % (end_time)
     for one_room in room_list:
-        temp = '[%d, %d, %d, %d, %d, %d]' % (one_room.room_id, one_room.topN, one_room.init_task_num, \
+        temp = '[room_id=%d, topn=%d, init_n=%d, add_n=%d, add_N=%d, add_sum=%d]' % (one_room.room_id, one_room.topN, one_room.init_task_num, \
                                              one_room.distribute_num_for_topN, one_room.distribute_num_for_ALL-one_room.distribute_num_for_topN, one_room.distribute_num_for_ALL)
         print temp
         log_file.write('%s\n' % temp)
