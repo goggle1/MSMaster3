@@ -297,7 +297,9 @@ def do_virtual_room_simulate_add(platform, record):
     virtual_rooms = virtual_rooms_all
     
     virtual_room_ids = record.name
-    if(len(virtual_room_ids) > 0):
+    if(virtual_room_ids == 'ALL'):
+        virtual_rooms = virtual_rooms_all
+    elif(len(virtual_room_ids) > 0):
         where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
         virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
    
@@ -519,7 +521,9 @@ def do_virtual_room_simulate_delete(platform, record):
     virtual_rooms = virtual_rooms_all
     
     virtual_room_ids = record.name
-    if(len(virtual_room_ids) > 0):
+    if(virtual_room_ids == 'ALL'):
+        virtual_rooms = virtual_rooms_all
+    elif(len(virtual_room_ids) > 0):
         where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
         virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
     
@@ -627,7 +631,9 @@ def do_virtual_room_percent_topN(platform, record):
     virtual_rooms = virtual_rooms_all
     
     virtual_room_ids = record.name
-    if(len(virtual_room_ids) > 0):
+    if(virtual_room_ids == 'ALL'):
+        virtual_rooms = virtual_rooms_all
+    elif(len(virtual_room_ids) > 0):
         where_condition = 'virtual_room_id IN (%s)' % (virtual_room_ids)
         virtual_rooms = virtual_rooms_all.extra(where=[where_condition])
     
@@ -1127,7 +1133,7 @@ def virtual_room_percent_topN(request, platform):
      
     operation1 = {}
     operation1['type'] = 'virtual_room_percent_topN'
-    operation1['name'] = 'ALL'
+    operation1['name'] = virtual_room_ids
     operation1['user'] = request.user.username
     operation1['dispatch_time'] = dispatch_time
     operation1['memo'] = ''

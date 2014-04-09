@@ -236,11 +236,15 @@ def get_ms_list(request, platform):
 
 def show_ms_list(request, platform):  
     output = ''
+    
+    ms_all = get_ms_local(platform)
     ips = request.REQUEST['ips']    
     ip_list = ips.split(',')
     for ip in ip_list:
         title = '<h1>ip: %s</h1>' % (ip)
-        output += title  
+        output += title 
+        ms_list = ms_all.filter(server_ip=ip)
+        ''' 
         try:            
             req = urllib2.Request('http://%s:11000/ms/?cmd=check&detail=2'%(ip))
             response = urllib2.urlopen(req)
@@ -248,6 +252,9 @@ def show_ms_list(request, platform):
             output += the_page
         except:
             output += 'error'
+        '''
+        for one_ms in ms_list:
+            output += str(one_ms.todict())
     return HttpResponse(output)
 
 
