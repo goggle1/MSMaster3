@@ -215,7 +215,7 @@ var msJS = function(){
             //var total_task_num = record.get('total_task_num');
             //if(task_number != total_task_num) metadata.css = 'bgred';
             
-            if(value < 2000) 
+            if(value < 500) 
             {
                 metadata.css = 'bgred';
             }   
